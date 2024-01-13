@@ -9,6 +9,7 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPosition {
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

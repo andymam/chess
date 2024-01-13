@@ -8,6 +8,8 @@ package chess;
  */
 public class ChessBoard {
 
+
+//    piecearray instead of board
     private ChessPiece[][] board;
 
     public ChessBoard() {
@@ -37,15 +39,7 @@ public class ChessBoard {
         int row = position.getRow() - 1;
         int col = position.getColumn() - 1;
 
-        if (isValidPosition(row, col)) {
-            return board[row][col];
-        } else {
-            return null;
-        }
-    }
-
-    private boolean isValidPosition(int row, int col) {
-        return row >= 1 && row <= 8 && col >= 1 && col <= 8;
+        return board[row][col];
     }
 
     /**
