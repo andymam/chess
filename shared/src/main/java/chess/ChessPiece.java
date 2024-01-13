@@ -197,11 +197,12 @@ public class ChessPiece {
         int currentRow = position.getRow();
         int currentCol = position.getColumn();
 
-        int[] directions = {-1, 1, -2, 2};
+        int[] rowOffsets = {-1, 1, -2, 2};
+        int[] colOffsets = {-1, 1, -2, 2};
 
-        for (int rowMove : directions) {
-            for (int colMove : directions) {
-                if (rowMove == 0 && colMove == 0) {
+        for (int rowMove : rowOffsets) {
+            for (int colMove : colOffsets) {
+                if (Math.abs(rowMove) + Math.abs(colMove) != 3) {
                     continue;
                 }
 
@@ -209,9 +210,8 @@ public class ChessPiece {
                 int newCol = currentCol + colMove;
 
                 ChessPosition newPosition = new ChessPosition(newRow, newCol);
-                ChessPiece spot = board.getPiece(newPosition);
 
-                if (onBoard(newRow, newCol) && (spot == null || this.pieceColor != spot.pieceColor)) {
+                if (onBoard(newRow, newCol) && (board.getPiece(newPosition) == null || this.pieceColor != board.getPiece(newPosition).pieceColor)) {
                     validMoves.add(new ChessMove(position, newPosition));
                 }
             }
