@@ -26,9 +26,6 @@ public class ChessMove {
         this.promotionPiece = promotionPiece;
     }
 
-//    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
-//    }
-
     /**
      * @return ChessPosition of starting location
      */
@@ -43,6 +40,16 @@ public class ChessMove {
         return endPosition;
     }
 
+    /**
+     * Gets the type of piece to promote a pawn to if pawn promotion is part of this
+     * chess move
+     *
+     * @return Type of piece to promote a pawn to, or null if no promotion
+     */
+    public ChessPiece.PieceType getPromotionPiece() {
+        return promotionPiece;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,15 +61,5 @@ public class ChessMove {
     @Override
     public int hashCode() {
         return Objects.hash(startPosition, endPosition, promotionPiece);
-    }
-
-    /**
-     * Gets the type of piece to promote a pawn to if pawn promotion is part of this
-     * chess move
-     *
-     * @return Type of piece to promote a pawn to, or null if no promotion
-     */
-    public ChessPiece.PieceType getPromotionPiece() {
-        throw new RuntimeException("Not implemented");
     }
 }

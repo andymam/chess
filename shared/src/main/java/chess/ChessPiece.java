@@ -70,10 +70,10 @@ public class ChessPiece {
                 addKnightMoves(board, myPosition, validMoves);
                 break;
             case ROOK:
-//                addRookMoves(board, myPosition, validMoves);
+                addRookMoves(board, myPosition, validMoves);
                 break;
             case PAWN:
-//                addPawnMoves(board, myPosition, validMoves);
+                addPawnMoves(board, myPosition, validMoves);
                 break;
             default:
                 throw new UnsupportedOperationException("Not a piece");
@@ -81,18 +81,6 @@ public class ChessPiece {
         return validMoves;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChessPiece that=(ChessPiece) o;
-        return pieceColor == that.pieceColor && type == that.type;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pieceColor, type);
-    }
 
     private void addKingMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
         int currentRow = position.getRow();
@@ -102,19 +90,11 @@ public class ChessPiece {
 
         for (int rowMove : directions) {
             for (int colMove : directions) {
-                if (rowMove == 0 && colMove == 0) {
-                    continue;
-                }
 
                 int newRow = currentRow + rowMove;
                 int newCol = currentCol + colMove;
 
-
                 ChessPosition newPosition = new ChessPosition(newRow, newCol);
-
-                if (!onBoard(newRow, newCol)) {
-                    continue;
-                }
 
                 if (onBoard(newRow, newCol) && (board.getPiece(newPosition) == null || board.getPiece(newPosition).pieceColor != this.pieceColor)) {
                     validMoves.add(new ChessMove(position, newPosition));
@@ -131,9 +111,6 @@ public class ChessPiece {
 
         for (int rowMove : directions) {
             for (int colMove : directions) {
-                if (rowMove == 0 && colMove == 0) {
-                    continue;
-                }
 
                 int newRow=currentRow + rowMove;
                 int newCol=currentCol + colMove;
@@ -166,9 +143,6 @@ public class ChessPiece {
 
         for (int rowMove : directions) {
             for (int colMove : directions) {
-                if (rowMove == 0 && colMove == 0) {
-                    continue;
-                }
 
                 int newRow = currentRow + rowMove;
                 int newCol = currentCol + colMove;
@@ -185,7 +159,6 @@ public class ChessPiece {
                     } else {
                         break;
                     }
-
                     newRow += rowMove;
                     newCol += colMove;
                 }
@@ -218,15 +191,89 @@ public class ChessPiece {
         }
     }
 
-//    private void addRookMoves() {
-//
-//    }
-//
-//    private void addPawnMoves() {
-//
-//    }
+    private void addRookMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
+        int currentRow = position.getRow();
+        int currentCol = position.getColumn();
+
+        int[] directions = {-1, 0, 1};
+
+        for (int rowMove : directions) {
+            for (int colMove : directions) {
+                if (rowMove != 0 && colMove != 0) {
+                    continue;
+                }
+
+                int newRow = currentRow + rowMove;
+                int newCol = currentCol + colMove;
+
+                while (onBoard(newRow, newCol)) {
+                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
+                    ChessPiece spot = board.getPiece(newPosition);
+
+                    if (spot == null) {
+                        validMoves.add(new ChessMove(position, newPosition));
+                    } else if (spot.pieceColor != this.pieceColor) {
+                        validMoves.add(new ChessMove(position, newPosition));
+                        break;
+                    } else {
+                        break;
+                    }
+                    newRow += rowMove;
+                    newCol += colMove;
+                }
+            }
+        }
+    }
+
+    private void addPawnMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
+        int currentRow = position.getRow();
+        int currentCol = position.getColumn();
+        int direction = (this.pieceColor == pieceColor.WHITE) ? 1 : -1;
+
+        // Pawn moves forward
+        int newRow = currentRow + direction;
+        int newCol = currentCol;
+        if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
+            validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
+
+            // Pawn double move on first move
+            if ((currentRow == 1 && this.pieceColor == pieceColor.WHITE) ||
+                    (currentRow == 6 && this.pieceColor == pieceColor.BLACK)) {
+                newRow += direction;
+                if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
+                    validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
+                }
+            }
+        }
+
+        // Pawn captures diagonally
+        int[] captureCols = { currentCol - 1, currentCol + 1 };
+        for (int col : captureCols) {
+            newRow = currentRow + direction;
+            if (onBoard(newRow, col)) {
+                ChessPiece capturedPiece = board.getPiece(new ChessPosition(newRow, col));
+                if (capturedPiece != null && capturedPiece.pieceColor != this.pieceColor) {
+                    validMoves.add(new ChessMove(position, new ChessPosition(newRow, col)));
+                }
+            }
+        }
+    }
+
 
     private boolean onBoard(int row, int col) {
         return row >= 1 && row <= 8 && col >= 1 && col <= 8;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPiece that=(ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
     }
 }
