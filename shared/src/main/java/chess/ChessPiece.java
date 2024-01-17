@@ -233,12 +233,16 @@ public class ChessPiece {
         // Pawn moves forward
         int newRow = currentRow + direction;
         int newCol = currentCol;
+
         if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
-            validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
+            if ((newRow == 8 && this.pieceColor == pieceColor.WHITE) || (newRow == 1 && this.pieceColor == pieceColor.BLACK)) {
+                addPromotionMoves(board, position, new ChessPosition(newRow, newCol), validMoves);
+            } else {
+                validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
+            }
 
             // Pawn double move on first move
-            if ((currentRow == 1 && this.pieceColor == pieceColor.WHITE) ||
-                    (currentRow == 6 && this.pieceColor == pieceColor.BLACK)) {
+            if ((currentRow == 2 && this.pieceColor == pieceColor.WHITE) || (currentRow == 7 && this.pieceColor == pieceColor.BLACK)) {
                 newRow += direction;
                 if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
                     validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
@@ -247,18 +251,30 @@ public class ChessPiece {
         }
 
         // Pawn captures diagonally
-        int[] captureCols = { currentCol - 1, currentCol + 1 };
+        int[] captureCols = {currentCol - 1, currentCol + 1};
         for (int col : captureCols) {
             newRow = currentRow + direction;
             if (onBoard(newRow, col)) {
                 ChessPiece capturedPiece = board.getPiece(new ChessPosition(newRow, col));
                 if (capturedPiece != null && capturedPiece.pieceColor != this.pieceColor) {
-                    validMoves.add(new ChessMove(position, new ChessPosition(newRow, col)));
+                    if ((newRow == 8 && this.pieceColor == ChessGame.TeamColor.WHITE) || (newRow == 1 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
+                        addPromotionMoves(board, position, new ChessPosition(newRow, col), validMoves);
+                    } else {
+                        validMoves.add(new ChessMove(position, new ChessPosition(newRow, col)));
+                    }
                 }
             }
         }
     }
 
+    private void addPromotionMoves(ChessBoard board, ChessPosition position, ChessPosition newPosition, Collection<ChessMove> validMoves) {
+        // Add moves with different promotion pieces (e.g., queen, knight, rook, bishop)
+        ChessPiece.PieceType[] promotionTypes = {ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.ROOK, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT};
+        for (ChessPiece.PieceType promotionPiece : promotionTypes) {
+            ChessMove promotionMove = new ChessMove(position, newPosition, promotionPiece);
+            validMoves.add(promotionMove);
+        }
+    }
 
     private boolean onBoard(int row, int col) {
         return row >= 1 && row <= 8 && col >= 1 && col <= 8;
