@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 public class ChessPiece {
 
-    private ChessGame.TeamColor pieceColor;
-    private ChessPiece.PieceType type;
+    private final ChessGame.TeamColor pieceColor;
+    private final ChessPiece.PieceType type;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
@@ -57,26 +57,13 @@ public class ChessPiece {
         Collection<ChessMove> validMoves = new HashSet<>();
 
         switch (type) {
-            case KING:
-                addKingMoves(board, myPosition, validMoves);
-                break;
-            case QUEEN:
-                addQueenMoves(board, myPosition, validMoves);
-                break;
-            case BISHOP:
-                addBishopMoves(board, myPosition, validMoves);
-                break;
-            case KNIGHT:
-                addKnightMoves(board, myPosition, validMoves);
-                break;
-            case ROOK:
-                addRookMoves(board, myPosition, validMoves);
-                break;
-            case PAWN:
-                addPawnMoves(board, myPosition, validMoves);
-                break;
-            default:
-                throw new UnsupportedOperationException("Not a piece");
+            case KING -> addKingMoves(board, myPosition, validMoves);
+            case QUEEN -> addQueenMoves(board, myPosition, validMoves);
+            case BISHOP -> addBishopMoves(board, myPosition, validMoves);
+            case KNIGHT -> addKnightMoves(board, myPosition, validMoves);
+            case ROOK -> addRookMoves(board, myPosition, validMoves);
+            case PAWN -> addPawnMoves(board, myPosition, validMoves);
+            default -> throw new UnsupportedOperationException("Not a piece");
         }
         return validMoves;
     }
@@ -228,21 +215,25 @@ public class ChessPiece {
     private void addPawnMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
         int currentRow = position.getRow();
         int currentCol = position.getColumn();
-        int direction = (this.pieceColor == pieceColor.WHITE) ? 1 : -1;
+
+        int direction = (this.pieceColor == ChessGame.TeamColor.WHITE) ? 1 : -1;
 
         // Pawn moves forward
         int newRow = currentRow + direction;
         int newCol = currentCol;
 
-        if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
-            if ((newRow == 8 && this.pieceColor == pieceColor.WHITE) || (newRow == 1 && this.pieceColor == pieceColor.BLACK)) {
-                addPromotionMoves(board, position, new ChessPosition(newRow, newCol), validMoves);
+        ChessPosition newPosition = new ChessPosition(newRow, newCol);
+        ChessPiece spot = board.getPiece(newPosition);
+
+        if (onBoard(newRow, newCol) && spot == null) {
+            if ((newRow == 8 && this.pieceColor == ChessGame.TeamColor.WHITE) || (newRow == 1 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
+                addPromotionMoves(position, newPosition, validMoves);
             } else {
-                validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
+                validMoves.add(new ChessMove(position, newPosition));
             }
 
             // Pawn double move on first move
-            if ((currentRow == 2 && this.pieceColor == pieceColor.WHITE) || (currentRow == 7 && this.pieceColor == pieceColor.BLACK)) {
+            if ((currentRow == 2 && this.pieceColor == ChessGame.TeamColor.WHITE) || (currentRow == 7 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
                 newRow += direction;
                 if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
                     validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
@@ -258,7 +249,7 @@ public class ChessPiece {
                 ChessPiece capturedPiece = board.getPiece(new ChessPosition(newRow, col));
                 if (capturedPiece != null && capturedPiece.pieceColor != this.pieceColor) {
                     if ((newRow == 8 && this.pieceColor == ChessGame.TeamColor.WHITE) || (newRow == 1 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
-                        addPromotionMoves(board, position, new ChessPosition(newRow, col), validMoves);
+                        addPromotionMoves(position, new ChessPosition(newRow, col), validMoves);
                     } else {
                         validMoves.add(new ChessMove(position, new ChessPosition(newRow, col)));
                     }
@@ -267,7 +258,7 @@ public class ChessPiece {
         }
     }
 
-    private void addPromotionMoves(ChessBoard board, ChessPosition position, ChessPosition newPosition, Collection<ChessMove> validMoves) {
+    private void addPromotionMoves(ChessPosition position, ChessPosition newPosition, Collection<ChessMove> validMoves) {
         // Add moves with different promotion pieces (e.g., queen, knight, rook, bishop)
         ChessPiece.PieceType[] promotionTypes = {ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.ROOK, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT};
         for (ChessPiece.PieceType promotionPiece : promotionTypes) {
