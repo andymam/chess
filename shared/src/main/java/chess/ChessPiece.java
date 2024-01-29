@@ -157,11 +157,10 @@ public class ChessPiece {
         int currentRow = position.getRow();
         int currentCol = position.getColumn();
 
-        int[] rowOffsets = {-1, 1, -2, 2};
-        int[] colOffsets = {-1, 1, -2, 2};
+        int[] offsets = {-1, 1, -2, 2};
 
-        for (int rowMove : rowOffsets) {
-            for (int colMove : colOffsets) {
+        for (int rowMove : offsets) {
+            for (int colMove : offsets) {
                 if (Math.abs(rowMove) + Math.abs(colMove) != 3) {
                     continue;
                 }
@@ -235,7 +234,7 @@ public class ChessPiece {
             // Pawn double move on first move
             if ((currentRow == 2 && this.pieceColor == ChessGame.TeamColor.WHITE) || (currentRow == 7 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
                 newRow += direction;
-                if (onBoard(newRow, newCol) && board.getPiece(new ChessPosition(newRow, newCol)) == null) {
+                if (board.getPiece(new ChessPosition(newRow, newCol)) == null) {
                     validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
                 }
             }
