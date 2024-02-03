@@ -154,4 +154,20 @@ public class ChessGame {
         teamTurn = (teamTurn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
 
+    private ChessPosition getKingPosition(ChessGame.TeamColor teamColor) {
+        for (int row = 1; row < 8; row++) {
+            for (int col = 1; col < 8; col++) {
+                ChessPosition position = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(position);
+                if (piece == null) {
+                    continue;
+                }
+                if (piece.getPieceType() == ChessPiece.PieceType.KING && piece.getTeamColor() == teamColor) {
+                    return position;
+                }
+            }
+        }
+        return null;
+    }
+
 }
