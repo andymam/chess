@@ -109,6 +109,7 @@ public class ChessGame {
                 }
             }
         }
+        return false;
     }
 
     /**
