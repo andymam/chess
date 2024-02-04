@@ -2,6 +2,7 @@ package chess;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -76,12 +77,59 @@ public class ChessGame {
     /**
      * Makes a move in a chess game
      *
-     * @param move chess move to preform
-     * @throws InvalidMoveException if move is invalid
+     * @param move chess move to perform
+     * @throws InvalidMoveException if the move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+
+        // Get the piece at the starting position
+        ChessPiece startPiece = board.getPiece(startPosition);
+
+        // Check if there's a piece at the starting position
+        if (startPiece == null) {
+            throw new InvalidMoveException("No piece at the starting position");
+        }
+
+        // Check if it's the correct team's turn to move
+        if (startPiece.getTeamColor() != teamTurn) {
+            throw new InvalidMoveException("Not the current team's turn to move");
+        }
+
+        // Get the set of valid moves for the piece at the starting position
+        Set<ChessMove> validMoves = new HashSet<>(startPiece.pieceMoves(board, startPosition));
+
+        // Check if the specified move is in the set of valid moves
+        if (!validMoves.contains(move)) {
+            throw new InvalidMoveException("Invalid move");
+        }
+
+        // Make the move on the board
+        ChessPiece endPiece = board.getPiece(endPosition);
+        board.addPiece(endPosition, startPiece);
+        board.addPiece(startPosition, null);
+
+        // Check for pawn promotion
+        if (startPiece.getPieceType() == ChessPiece.PieceType.PAWN &&
+                (endPosition.getRow() == 1 || endPosition.getRow() == 8)) {
+            ChessPiece.PieceType promotionPiece = move.getPromotionPiece();
+            ChessPiece promotedPiece = new ChessPiece(teamTurn, promotionPiece);
+            board.addPiece(endPosition, promotedPiece);
+        }
+
+        // Check if the move puts the current team's king in check
+        if (isInCheck(teamTurn)) {
+            // Undo the move if it puts the king in check
+            board.addPiece(startPosition, startPiece);
+            board.addPiece(endPosition, endPiece);
+            throw new InvalidMoveException("Move puts the king in check");
+        }
+
+        // Switch the team's turn
+        switchTeamTurn();
     }
+
 
     /**
      * Determines if the given team is in check
@@ -205,4 +253,25 @@ public class ChessGame {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "ChessGame{" +
+                "board=" + board +
+                ", teamTurn=" + teamTurn +
+                ", possibleMoves=" + possibleMoves +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessGame chessGame=(ChessGame) o;
+        return Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn && Objects.equals(possibleMoves, chessGame.possibleMoves);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(board, teamTurn, possibleMoves);
+    }
 }
