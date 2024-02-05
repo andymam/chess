@@ -167,27 +167,10 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        if (!isInCheck(teamColor)) {
+        if (moveAvailable(teamColor)) {
             return false;
         }
-
-        for (int row = 1; row <= 8; row++) {
-            for (int col = 1; col <= 8; col++) {
-                ChessPosition position = new ChessPosition(row, col);
-                ChessPiece piece = board.getPiece(position);
-
-                if (piece != null && piece.getTeamColor() == teamColor) {
-                    Set<ChessMove> validMoves = new HashSet<>(piece.pieceMoves(board, position));
-
-                    removeIfInCheck(validMoves);
-
-                    if (!validMoves.isEmpty()) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        return isInCheck(teamColor);
     }
 
     /**
@@ -198,6 +181,13 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        if (moveAvailable(teamColor)) {
+            return false;
+        }
+        return !isInCheck(teamColor);
+    }
+
+    private boolean moveAvailable(TeamColor teamColor) {
         for (int row = 1; row <= 8; row++) {
             for (int col = 1; col <= 8; col++) {
                 ChessPosition position = new ChessPosition(row, col);
