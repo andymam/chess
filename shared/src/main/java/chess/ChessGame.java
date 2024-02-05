@@ -15,7 +15,6 @@ public class ChessGame {
 
     private ChessBoard board;
     private TeamColor teamTurn;
-    private Set<ChessMove> possibleMoves = new HashSet<>();
 
     public ChessGame() {
         this.board = new ChessBoard();
@@ -185,6 +184,7 @@ public class ChessGame {
             return false;
         }
         return !isInCheck(teamColor);
+//        return !moveAvailable(teamColor);
     }
 
     private boolean moveAvailable(TeamColor teamColor) {
@@ -193,16 +193,20 @@ public class ChessGame {
                 ChessPosition position = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(position);
 
-                if (piece != null && piece.getTeamColor() == teamColor) {
-                    Set<ChessMove> validMoves = new HashSet<>(piece.pieceMoves(board, position));
+                if (piece == null) {
+                    continue;
+                }
+
+                if (piece.getTeamColor().equals(teamColor)) {
+                    Set<ChessMove> validMoves = new HashSet<>(validMoves(position));
 
                     if (!validMoves.isEmpty()) {
-                        return false;
+                        return true;
                     }
                 }
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -235,7 +239,7 @@ public class ChessGame {
                 if (piece == null) {
                     continue;
                 }
-                if (piece.getPieceType() == ChessPiece.PieceType.KING && piece.getTeamColor() == teamColor) {
+                if (piece.getPieceType() == ChessPiece.PieceType.KING && piece.getTeamColor().equals(teamColor)) {
                     return position;
                 }
             }
@@ -248,7 +252,6 @@ public class ChessGame {
         return "ChessGame{" +
                 "board=" + board +
                 ", teamTurn=" + teamTurn +
-                ", possibleMoves=" + possibleMoves +
                 '}';
     }
 
@@ -257,11 +260,11 @@ public class ChessGame {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessGame chessGame=(ChessGame) o;
-        return Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn && Objects.equals(possibleMoves, chessGame.possibleMoves);
+        return Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(board, teamTurn, possibleMoves);
+        return Objects.hash(board, teamTurn);
     }
 }
