@@ -27,7 +27,7 @@ You can use the following commands to build, test, package, and run your code.
 | `mvn -pl client exec:java` | Build and run the client `Main`                 |
 | `mvn -pl server exec:java` | Build and run the server `Main`                 |
 
-These commands are configured by the `pom.xml` (Project Object Model) files. There is a POM file in the root of the project, and one in each of the modules. The root POM defines any global dependencies and references the module POM files.
+These commands are configured by the `pom.xml` (Project Object model) files. There is a POM file in the root of the project, and one in each of the modules. The root POM defines any global dependencies and references the module POM files.
 
 ### Running the program using Java
 
