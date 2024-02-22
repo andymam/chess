@@ -1,10 +1,18 @@
 package service;
 
-import dataaccess.DataAccess;
-import records.*;
-import server.*;
-import dataaccess.DataAccessException;
+import dataaccess.AuthDAO;
+import dataaccess.GameDAO;
+import dataaccess.UserDAO;
 
 public class GameService {
-//  private final DataAccess dataAccess;
+
+  UserDAO userDAO;
+  GameDAO gameDAO;
+  AuthDAO authDAO;
+
+  public GameService(UserDAO userDAO, GameDAO gameDAO, AuthDAO authDAO) {
+    this.userDAO=userDAO;
+    this.gameDAO=gameDAO;
+    this.authDAO=authDAO;
+  }
 }

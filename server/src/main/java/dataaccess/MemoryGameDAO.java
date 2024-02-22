@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class MemoryGameDAO {
+public class MemoryGameDAO implements GameDAO {
   ArrayList<GameData> games = new ArrayList<>();
   private int newGameID = 0;
 
-  void clearGame() {
+  public void clearGames() {
     games.clear();
   }
   public GameData addGame(GameData game) {

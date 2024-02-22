@@ -1,27 +1,32 @@
 package service;
 
-import dataaccess.DataAccess;
 import records.*;
-import server.*;
-import dataaccess.DataAccessException;
+import dataaccess.*;
+import handlers.*;
+import server.requests.RegisterRequest;
+import server.results.RegisterResult;
 
-//public class UserService {
-//  private final DataAccess dataAccess;
-//
-//  public UserService(DataAccess dataAccess) {
-//    this.dataAccess = dataAccess;
-//  }
-//
-//  public AuthData register(UserData user) throws DataAccessException {
-//
-//  }
-//
-//  public AuthData login(UserData user) {
-//
-//  }
-//
-//  public void logout(UserData user) {
-//
-//  }
-//
-//}
+public class UserService {
+
+  UserDAO userDAO;
+  GameDAO gameDAO;
+  AuthDAO authDAO;
+
+
+  public UserService(UserDAO userDAO, GameDAO gameDAO, AuthDAO authDAO) {
+    this.userDAO = userDAO;
+  }
+
+  public RegisterResult register(RegisterRequest registerRequest) {
+
+  }
+
+  public AuthData login(UserData user) {
+
+  }
+
+  public void logout(UserData user) {
+
+  }
+
+}

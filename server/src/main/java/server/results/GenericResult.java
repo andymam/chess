@@ -1,5 +1,5 @@
 package server.results;
 
-public record genResult(String message) { }
+public record GenericResult(String message) { }
 
 // for clear, logout, and join

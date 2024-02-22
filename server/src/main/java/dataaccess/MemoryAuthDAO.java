@@ -5,10 +5,10 @@ import records.AuthData;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MemoryAuthDAO {
+public class MemoryAuthDAO implements AuthDAO {
   ArrayList<AuthData> authTokens = new ArrayList<>();
 
-  void clearAuth() {
+  public void clearAuths() {
     authTokens.clear();
   }
 

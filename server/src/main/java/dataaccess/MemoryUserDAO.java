@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class MemoryUserDAO {
+public class MemoryUserDAO implements UserDAO {
   ArrayList<UserData> users = new ArrayList<>();
+
+  public void clearUsers() {
+    users.clear();
+  }
 
   public UserData addUser(UserData user) {
     for (UserData youser : users) {
