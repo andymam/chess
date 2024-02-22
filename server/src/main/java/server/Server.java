@@ -1,44 +1,49 @@
 package server;
 
 import spark.*;
-import java.util.Map;
+import dataaccess.*;
+import records.*;
 import service.*;
 
 public class Server {
 
-    public static void main(String[] args) {
-        new Server().run(8080);
-    }
+//    DataAccess data = new MemoryDataAccess();
 
-    public Server run(int desiredPort) {
+//    ClearHandler clearHandler = new ClearHandler(data);
+//    RegisterHandler registerHandler = new RegisterHandler(data);
+
+//    public static void main(String[] args) {
+//        try {
+//            int port = Integer.parseInt(args[0]);
+//            Server temp = new Server();
+//            temp.run(port);
+//        } catch (Exception exp) {
+//            System.err.println(exp.getMessage());
+//        }
+//    }
+
+    public int run(int desiredPort) {
         Spark.port(desiredPort);
 
-        Spark.staticFiles.location("web");
+        Spark.staticFiles.location("/web");
 
         // Register your endpoints and handle exceptions here.
-        Spark.delete("/db", this::clearDB);
-        Spark.post("/user", this::registerUser);
-        Spark.post("/session", this::loginUser);
-        Spark.delete("/session", this::logoutUser);
-        Spark.get("/game", this::listGames);
-        Spark.post("/game", this::createGame);
-        Spark.put("/game", this::joinGame);
-
+//        Spark.delete("/db", this::clearDB);
+//        Spark.post("/user", this::registerUser);
+//        Spark.post("/session", (Request req, Response res) -> new LoginHandler.login(req, res));
+//        Spark.delete("/session", this::logoutUser);
+//        Spark.get("/game", this::listGames);
+//        Spark.post("/game", this::createGame);
+//        Spark.put("/game", this::joinGame);
+        Spark.get("/hello", (req, res) -> "Hello BYU!");
+//        Spark.init();
 
         Spark.awaitInitialization();
-        return this;
-    }
-
-    public int port() {
         return Spark.port();
     }
 
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
-    }
-
-    private Object clearDB(Request req, Response res) throws ResponseException {
-
     }
 }
