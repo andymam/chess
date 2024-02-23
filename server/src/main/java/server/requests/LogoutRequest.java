@@ -2,4 +2,4 @@ package server.requests;
 
 import records.AuthData;
 
-public record LogoutRequest(AuthData authtoken) { }
+public record LogoutRequest(String authorization) { }

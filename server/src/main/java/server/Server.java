@@ -4,41 +4,41 @@ import spark.*;
 import dataaccess.*;
 import records.*;
 import service.*;
+import server.handlers.*;
 
 public class Server {
 
-//    DataAccess data = new MemoryDataAccess();
     UserDAO userDAO = new MemoryUserDAO();
     GameDAO gameDAO = new MemoryGameDAO();
     AuthDAO authDAO = new MemoryAuthDAO();
+    UserService userService;
+    GameService gameService;
+    ClearService clearService;
 
-//    ClearHandler clearHandler = new ClearHandler(userDAO, gameDAO, authDAO);
-//    RegisterHandler registerHandler = new RegisterHandler(data);
+    public Server() {
+        this.userDAO = new MemoryUserDAO();
+        this.gameDAO = new MemoryGameDAO();
+        this.authDAO = new MemoryAuthDAO();
+        this.userService = new UserService()
+    }
 
-//    public static void main(String[] args) {
-//        try {
-//            int port = Integer.parseInt(args[0]);
-//            Server temp = new Server();
-//            temp.run(port);
-//        } catch (Exception exp) {
-//            System.err.println(exp.getMessage());
-//        }
-//    }
+    ClearHandler clearHandler = new ClearHandler(userDAO, gameDAO, authDAO);
+    RegisterHandler registerHandler = new RegisterHandler(userDAO, gameDAO, authDAO);
+
+
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("/web");
 
-        // Register your endpoints and handle exceptions here.
-//        Spark.delete("/db", (Request req, Response res) -> new ClearHandler.clear(req, res));
+        Spark.delete("/db", (Request req, Response res) -> new ClearHandler.clear(req, res));
 //        Spark.post("/user", this::registerUser);
 //        Spark.post("/session", (Request req, Response res) -> new LoginHandler.login(req, res));
 //        Spark.delete("/session", this::logoutUser);
 //        Spark.get("/game", this::listGames);
 //        Spark.post("/game", this::createGame);
 //        Spark.put("/game", this::joinGame);
-//        Spark.get("/hello", (req, res) -> "Hello BYU!");
         Spark.init();
 
         Spark.awaitInitialization();

@@ -4,6 +4,7 @@ import records.AuthData;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 public class MemoryAuthDAO implements AuthDAO {
   ArrayList<AuthData> authTokens = new ArrayList<>();
@@ -26,6 +27,15 @@ public class MemoryAuthDAO implements AuthDAO {
 
   public void deleteAuthorization(String authToken)  {
     authTokens.remove(authToken);
+  }
+
+  public boolean inAuths(String authToken) {
+    for (AuthData auth : authTokens) {
+      if (Objects.equals(auth.getAuthToken(), authToken)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

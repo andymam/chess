@@ -11,4 +11,6 @@ public interface AuthDAO {
   boolean getAuthorization(String authToken) throws DataAccessException;
   void deleteAuthorization(String authToken) throws DataAccessException;
 
+  boolean inAuths(String authToken) throws  DataAccessException;
+
 }

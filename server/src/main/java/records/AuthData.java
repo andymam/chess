@@ -4,7 +4,10 @@ import java.util.UUID;
 public class AuthData {
   String authToken;
 
-  public AuthData() {
+  String username;
+
+  public AuthData(String username) {
+    this.username = username;
     this.authToken = UUID.randomUUID().toString();
   }
 
