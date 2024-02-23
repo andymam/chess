@@ -2,7 +2,7 @@ package service;
 
 import records.*;
 import dataaccess.*;
-import handlers.*;
+import server.handlers.*;
 import server.requests.RegisterRequest;
 import server.results.RegisterResult;
 
@@ -17,16 +17,16 @@ public class UserService {
     this.userDAO = userDAO;
   }
 
-  public RegisterResult register(RegisterRequest registerRequest) {
-
-  }
-
-  public AuthData login(UserData user) {
-
-  }
-
-  public void logout(UserData user) {
-
-  }
+//  public RegisterResult register(RegisterRequest registerRequest) {
+//
+//  }
+//
+//  public AuthData login(UserData user) {
+//
+//  }
+//
+//  public void logout(UserData user) {
+//
+//  }
 
 }

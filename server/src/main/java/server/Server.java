@@ -12,7 +12,7 @@ public class Server {
     GameDAO gameDAO = new MemoryGameDAO();
     AuthDAO authDAO = new MemoryAuthDAO();
 
-    ClearHandler clearHandler = new ClearHandler(userDAO, gameDAO, authDAO);
+//    ClearHandler clearHandler = new ClearHandler(userDAO, gameDAO, authDAO);
 //    RegisterHandler registerHandler = new RegisterHandler(data);
 
 //    public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class Server {
         Spark.staticFiles.location("/web");
 
         // Register your endpoints and handle exceptions here.
-        Spark.delete("/db", (Request req, Response res) -> new ClearHandler.clear(req, res));
+//        Spark.delete("/db", (Request req, Response res) -> new ClearHandler.clear(req, res));
 //        Spark.post("/user", this::registerUser);
 //        Spark.post("/session", (Request req, Response res) -> new LoginHandler.login(req, res));
 //        Spark.delete("/session", this::logoutUser);
