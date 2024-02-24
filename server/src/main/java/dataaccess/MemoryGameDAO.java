@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class MemoryGameDAO implements GameDAO {
   ArrayList<GameData> games = new ArrayList<>();
-  private int newGameID = 0;
+//  private int newGameID = 1;
 
   public void clearGames() {
     games.clear();
@@ -19,9 +19,8 @@ public class MemoryGameDAO implements GameDAO {
         return null;
       }
     }
-    GameData newGame = new GameData(newGameID++, game.getGameName());
-    games.add(newGame);
-    return newGame;
+    games.add(game);
+    return game;
   }
 
   public GameData getGame(int gameID) {

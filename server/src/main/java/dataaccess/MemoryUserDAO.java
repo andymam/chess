@@ -36,7 +36,7 @@ public class MemoryUserDAO implements UserDAO {
 
   public UserData getUser(LoginRequest loginRequest) {
     for (UserData user : users) {
-      if (Objects.equals(user.getUsername(), loginRequest)) {
+      if (Objects.equals(user.getUsername(), loginRequest.username())) {
         return user;
       }
     }

@@ -21,14 +21,13 @@ public class ListGamesHandler extends Handler {
   public Object listGames(Request req, Response res) throws  DataAccessException {
     try {
       ListGamesRequest listGamesRequest = new Gson().fromJson(res.body(), ListGamesRequest.class);
-      Collection<GameData> games = gameService.listGames(listGamesRequest);
-      ListGamesResult listGamesResult = new ListGamesResult(0, null, null, null, null);
+      ListGamesResult listGamesResult = gameService.listGames(listGamesRequest);
       res.status(200);
       return new Gson().toJson(listGamesResult);
     }
     catch (DataAccessException exception) {
       res.status(getError(exception.getMessage()));
-      return new Gson().toJson(new ListGamesResult(0, null, null, null, exception.getMessage()));
+      return new Gson().toJson(new ListGamesResult(null, exception.getMessage()));
     }
   }
 }

@@ -23,6 +23,8 @@ public class UserService {
 
   public UserService(UserDAO userDAO, GameDAO gameDAO, AuthDAO authDAO) {
     this.userDAO = userDAO;
+    this.authDAO = authDAO;
+    this.gameDAO = gameDAO;
   }
 
   public RegisterResult register(RegisterRequest registerRequest) throws DataAccessException {
@@ -42,8 +44,8 @@ public class UserService {
 
 
   public LoginResult login(LoginRequest loginRequest) throws DataAccessException {
+    UserData user = userDAO.getUser(loginRequest);
     if (!Objects.equals(loginRequest.username(), "") && !Objects.equals(loginRequest.password(), "")) {
-      UserData user = userDAO.getUser(loginRequest);
       if (user != null) {
         if (Objects.equals(user.getPassword(), loginRequest.password())) {
           AuthData authToken = new AuthData(loginRequest.username());

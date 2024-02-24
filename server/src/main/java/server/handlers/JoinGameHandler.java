@@ -15,16 +15,16 @@ public class JoinGameHandler extends Handler {
     super(userDAO, gameDAO, authDAO);
   }
 
-  public Object joinGame(Request req, Response res) throws DataAccessException {
-    try {
-      JoinGameRequest joinGameRequest = new Gson().fromJson(res.body(), JoinGameRequest.class);
-      GenericResult result = gameService.joinGame(joinGameRequest);
-      res.status(200);
-      return new Gson().toJson(result);
-    }
-    catch (DataAccessException exception) {
-      res.status(getError(exception.getMessage()));
-      return new Gson().toJson(new GenericResult(exception.getMessage()));
-    }
-  }
+//  public Object joinGame(Request req, Response res) throws DataAccessException {
+//    try {
+//      JoinGameRequest joinGameRequest = new Gson().fromJson(res.body(), JoinGameRequest.class);
+//      GenericResult result = gameService.joinGame(joinGameRequest);
+//      res.status(200);
+//      return new Gson().toJson(result);
+//    }
+//    catch (DataAccessException exception) {
+//      res.status(getError(exception.getMessage()));
+//      return new Gson().toJson(new GenericResult(exception.getMessage()));
+//    }
+//  }
 }
