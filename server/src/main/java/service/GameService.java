@@ -4,6 +4,7 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
+import records.AuthData;
 import records.GameData;
 import server.requests.CreateGameRequest;
 import server.requests.*;
@@ -52,7 +53,18 @@ public class GameService {
     throw new DataAccessException("Error: bad request");
   }
 
-//  public GenericResult joinGame(JoinGameRequest joinGameRequest) throws DataAccessException {
-//
-//  }
+  public GenericResult joinGame(JoinGameRequest joinGameRequest) throws DataAccessException {
+    if (authDAO.inAuths(joinGameRequest.authorization())) {
+      AuthData authToken = authDAO.getAuth(joinGameRequest.authorization());
+      GameData game = gameDAO.getGame(joinGameRequest.gameID());
+      if (joinGameRequest.gameID() != 0 && game != null) {
+        if (gameDAO.setPlayer(authToken.getUsername(), joinGameRequest.playerColor(), game)) {
+          return new GenericResult(null);
+        }
+        throw new DataAccessException("Error: already taken");
+      }
+      throw new DataAccessException("Error: bad request");
+    }
+    throw new DataAccessException("Error: unauthorized");
+  }
 }

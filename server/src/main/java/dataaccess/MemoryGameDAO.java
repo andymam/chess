@@ -40,12 +40,26 @@ public class MemoryGameDAO implements GameDAO {
     games.remove(game);
   }
 
-//  public void updateGame(String gameID) {
-//    for (game : games) {
-//      if (game = gameID) {
-//
-//      }
-//    }
-//  }
+  public boolean inGames(int gameID) {
+    for (GameData game : games) {
+      if (Objects.equals(game.getGameID(), gameID)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean setPlayer(String username, String playerColor, GameData game) {
+    if (Objects.equals(playerColor, null)) {
+      return true;
+    } else if (Objects.equals(playerColor, "WHITE") && Objects.equals(game.getWhiteUsername(), null)) {
+      game.setWhiteUser(username);
+      return true;
+    } else if (Objects.equals(playerColor, "BLACK") && Objects.equals(game.getBlackUsername(), null)) {
+      game.setBlackUser(username);
+      return true;
+    }
+    return false;
+  }
 
 }

@@ -6,6 +6,8 @@ import java.util.Collection;
 public interface AuthDAO {
 
   void clearAuths() throws DataAccessException;
+
+  AuthData getAuth(String authToken) throws DataAccessException;
   Collection<AuthData> getAuthTokens() throws DataAccessException;
   void addAuth(AuthData authToken) throws DataAccessException;
   boolean getAuthorization(String authToken) throws DataAccessException;

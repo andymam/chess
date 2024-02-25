@@ -19,4 +19,9 @@ public class AuthData {
   public String getAuthToken() {
     return authToken;
   }
+
+  public String getUsername() {
+    return username;
+  }
 }
+
