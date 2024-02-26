@@ -38,7 +38,7 @@ public class Handler {
   public int getError(String error) {
     if (Objects.equals(error, "Error: bad request")) {
       return 400;
-    } else if (Objects.equals(error, "unauthorized")) {
+    } else if (Objects.equals(error, "Error: unauthorized")) {
       return 401;
     } else if (Objects.equals(error, "Error: already taken")) {
       return 403;

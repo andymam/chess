@@ -1,3 +1,3 @@
 package server.results;
 
-public record CreateGameResult(int gameID, String message) { }
+public record CreateGameResult(Integer gameID, String message) { }

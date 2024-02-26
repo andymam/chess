@@ -38,14 +38,22 @@ public class Server {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("/web");
+
+        Spark.delete("/db", (req, res) -> {
+            new ClearHandler(userDAO, gameDAO, authDAO).clear(req, res);
+            res.type("application/json");
+            return "{}"; // Empty JSON string
+        });
+
+
 //        Spark.delete("/db", (Request req, Response res) -> new ClearHandler(userDAO, gameDAO, authDAO).clear(req, res));
-//        Spark.post("/user", (Request req, Response res) -> new RegisterHandler(userDAO, gameDAO, authDAO).register(req, res));
-//        Spark.post("/session", (Request req, Response res) -> new LoginHandler(userDAO, gameDAO, authDAO).login(req, res));
-//        Spark.delete("/session", (Request req, Response res) -> new LogoutHandler(userDAO, gameDAO, authDAO).logout(req, res));
-//        Spark.get("/game", (Request req, Response res) -> new ListGamesHandler(userDAO, gameDAO, authDAO).listGames(req, res));
-//        Spark.post("/game", (Request req, Response res) -> new CreateGameHandler(userDAO, gameDAO, authDAO).createGame(req, res));
-//        Spark.put("/game", (Request req, Response res) -> new JoinGameHandler(userDAO, gameDAO, authDAO).joinGame(req, res));
-        Spark.init();
+        Spark.post("/user", (Request req, Response res) -> new RegisterHandler(userDAO, gameDAO, authDAO).register(req, res));
+        Spark.post("/session", (Request req, Response res) -> new LoginHandler(userDAO, gameDAO, authDAO).login(req, res));
+        Spark.delete("/session", (Request req, Response res) -> new LogoutHandler(userDAO, gameDAO, authDAO).logout(req, res));
+        Spark.get("/game", (Request req, Response res) -> new ListGamesHandler(userDAO, gameDAO, authDAO).listGames(req, res));
+        Spark.post("/game", (Request req, Response res) -> new CreateGameHandler(userDAO, gameDAO, authDAO).createGame(req, res));
+        Spark.put("/game", (Request req, Response res) -> new JoinGameHandler(userDAO, gameDAO, authDAO).joinGame(req, res));
+
 
         Spark.awaitInitialization();
         return Spark.port();

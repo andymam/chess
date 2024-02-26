@@ -46,17 +46,15 @@ public class UserService {
   public LoginResult login(LoginRequest loginRequest) throws DataAccessException {
     UserData user = userDAO.getUser(loginRequest);
     if (!Objects.equals(loginRequest.username(), "") && !Objects.equals(loginRequest.password(), "")) {
-      if (user != null) {
-        if (Objects.equals(user.getPassword(), loginRequest.password())) {
+      if (user != null && Objects.equals(user.getPassword(), loginRequest.password())) {
           AuthData authToken = new AuthData(loginRequest.username());
           authDAO.addAuth(authToken);
           return new LoginResult(user.getUsername(), authToken.getAuthToken(), null);
         }
+        throw new DataAccessException("Error: unauthorized");
       }
-      throw new DataAccessException("Error: unauthorized");
+      throw new DataAccessException("Error: bad request");
     }
-    throw new DataAccessException("Error: bad request");
-  }
 
   public GenericResult logout(LogoutRequest logoutRequest) throws DataAccessException {
     if (!Objects.equals(logoutRequest.authorization(), "")) {
