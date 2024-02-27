@@ -13,10 +13,6 @@ public class MemoryAuthDAO implements AuthDAO {
     authTokens.clear();
   }
 
-  public Collection<AuthData> getAuthTokens() {
-    return authTokens;
-  }
-
   public void addAuth(AuthData authToken) {
     authTokens.add(authToken);
   }

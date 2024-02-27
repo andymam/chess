@@ -91,71 +91,42 @@ public class ChessPiece {
     }
 
     private void addQueenMoves(ChessBoard board,  ChessPosition position, Collection<ChessMove> validMoves) {
-        int currentRow = position.getRow();
-        int currentCol = position.getColumn();
+        int currentRow1 = position.getRow();
+        int currentCol1 = position.getColumn();
 
-        int[] directions = {-1, 0, 1};
+        int[] directions1 = {-1, 0, 1};
 
-        for (int rowMove : directions) {
-            for (int colMove : directions) {
+        for (int rowMove : directions1) {
+            for (int colMove : directions1) {
 
-                int newRow=currentRow + rowMove;
-                int newCol=currentCol + colMove;
+                int newRow=currentRow1 + rowMove;
+                int newCol=currentCol1 + colMove;
 
-                while (onBoard(newRow, newCol)) {
-                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
-                    ChessPiece spot = board.getPiece(newPosition);
-
-                    if (spot == null) {
-                        validMoves.add(new ChessMove(position, newPosition));
-                    } else if (spot.pieceColor != this.pieceColor) {
-                        validMoves.add(new ChessMove(position, newPosition));
-                        break;
-                    } else {
-                        break;
-                    }
-
-                newRow += rowMove;
-                newCol += colMove;
-                }
+                movePiece(rowMove, colMove, newRow, newCol, board, position, validMoves);
             }
         }
     }
 
     private void addBishopMoves(ChessBoard board,  ChessPosition position, Collection<ChessMove> validMoves) {
-        int currentRow = position.getRow();
-        int currentCol = position.getColumn();
+        int currentRow2 = position.getRow();
+        int currentCol2 = position.getColumn();
 
-        int[] directions = {-1, 1};
+        int[] directions2 = {-1, 1};
 
-        for (int rowMove : directions) {
-            for (int colMove : directions) {
+        for (int rowMove : directions2) {
+            for (int colMove : directions2) {
 
-                int newRow = currentRow + rowMove;
-                int newCol = currentCol + colMove;
+                int newRow = currentRow2 + rowMove;
+                int newCol = currentCol2 + colMove;
 
-                while (onBoard(newRow, newCol)) {
-                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
-                    ChessPiece spot = board.getPiece(newPosition);
-
-                    if (spot == null) {
-                        validMoves.add(new ChessMove(position, newPosition));
-                    } else if (spot.pieceColor != this.pieceColor) {
-                        validMoves.add(new ChessMove(position, newPosition));
-                        break;
-                    } else {
-                        break;
-                    }
-                    newRow += rowMove;
-                    newCol += colMove;
-                }
+                movePiece(rowMove, colMove, newRow, newCol, board, position, validMoves);
             }
         }
     }
 
     private void addKnightMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
-        int currentRow = position.getRow();
-        int currentCol = position.getColumn();
+        int currentRow3 = position.getRow();
+        int currentCol3 = position.getColumn();
 
         int[] offsets = {-1, 1, -2, 2};
 
@@ -165,8 +136,8 @@ public class ChessPiece {
                     continue;
                 }
 
-                int newRow = currentRow + rowMove;
-                int newCol = currentCol + colMove;
+                int newRow = currentRow3 + rowMove;
+                int newCol = currentCol3 + colMove;
 
                 ChessPosition newPosition = new ChessPosition(newRow, newCol);
 
@@ -178,48 +149,52 @@ public class ChessPiece {
     }
 
     private void addRookMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
-        int currentRow = position.getRow();
-        int currentCol = position.getColumn();
+        int currentRow4 = position.getRow();
+        int currentCol4 = position.getColumn();
 
-        int[] directions = {-1, 0, 1};
+        int[] directions3 = {-1, 0, 1};
 
-        for (int rowMove : directions) {
-            for (int colMove : directions) {
+        for (int rowMove : directions3) {
+            for (int colMove : directions3) {
                 if (rowMove != 0 && colMove != 0) {
                     continue;
                 }
 
-                int newRow = currentRow + rowMove;
-                int newCol = currentCol + colMove;
+                int newRow = currentRow4 + rowMove;
+                int newCol = currentCol4 + colMove;
 
-                while (onBoard(newRow, newCol)) {
-                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
-                    ChessPiece spot = board.getPiece(newPosition);
-
-                    if (spot == null) {
-                        validMoves.add(new ChessMove(position, newPosition));
-                    } else if (spot.pieceColor != this.pieceColor) {
-                        validMoves.add(new ChessMove(position, newPosition));
-                        break;
-                    } else {
-                        break;
-                    }
-                    newRow += rowMove;
-                    newCol += colMove;
-                }
+                movePiece(rowMove, colMove, newRow, newCol, board, position, validMoves);
             }
         }
     }
 
+    public void movePiece(int rowMove, int colMove, int newRow, int newCol, ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
+        while (onBoard(newRow, newCol)) {
+            ChessPosition newPosition = new ChessPosition(newRow, newCol);
+            ChessPiece spot = board.getPiece(newPosition);
+
+            if (spot == null) {
+                validMoves.add(new ChessMove(position, newPosition));
+            } else if (spot.pieceColor != this.pieceColor) {
+                validMoves.add(new ChessMove(position, newPosition));
+                break;
+            } else {
+                break;
+            }
+            newRow += rowMove;
+            newCol += colMove;
+        }
+    }
+
     private void addPawnMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> validMoves) {
-        int currentRow = position.getRow();
-        int currentCol = position.getColumn();
+        int currentRow5 = position.getRow();
+        int currentCol5 = position.getColumn();
 
         int direction = (this.pieceColor == ChessGame.TeamColor.WHITE) ? 1 : -1;
 
         // Pawn moves forward
-        int newRow = currentRow + direction;
-        int newCol = currentCol;
+        int newRow = currentRow5 + direction;
+        int newCol = currentCol5;
 
         ChessPosition newPosition = new ChessPosition(newRow, newCol);
         ChessPiece spot = board.getPiece(newPosition);
@@ -232,7 +207,7 @@ public class ChessPiece {
             }
 
             // Pawn double move on first move
-            if ((currentRow == 2 && this.pieceColor == ChessGame.TeamColor.WHITE) || (currentRow == 7 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
+            if ((currentRow5 == 2 && this.pieceColor == ChessGame.TeamColor.WHITE) || (currentRow5 == 7 && this.pieceColor == ChessGame.TeamColor.BLACK)) {
                 newRow += direction;
                 if (board.getPiece(new ChessPosition(newRow, newCol)) == null) {
                     validMoves.add(new ChessMove(position, new ChessPosition(newRow, newCol)));
@@ -241,9 +216,9 @@ public class ChessPiece {
         }
 
         // Pawn captures diagonally
-        int[] captureCols = {currentCol - 1, currentCol + 1};
+        int[] captureCols = {currentCol5 - 1, currentCol5 + 1};
         for (int col : captureCols) {
-            newRow = currentRow + direction;
+            newRow = currentRow5 + direction;
             if (onBoard(newRow, col)) {
                 ChessPiece capturedPiece = board.getPiece(new ChessPosition(newRow, col));
                 if (capturedPiece != null && capturedPiece.pieceColor != this.pieceColor) {
