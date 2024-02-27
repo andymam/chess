@@ -1,3 +1,27 @@
 package server.requests;
 
-public record JoinGameRequest(String authorization, String playerColor, Integer gameID) { }
+public class JoinGameRequest{
+
+  String playerColor;
+  Integer gameID;
+  String authorization;
+
+  public JoinGameRequest(Integer gameID) {
+    this.gameID = gameID;
+  }
+
+  public Integer getGameID() {
+    return gameID;
+  }
+
+  public void setAuthorization(String authorization) {
+    this.authorization = authorization;
+  }
+  public String getAuthorization() {
+    return authorization;
+  }
+
+  public String getPlayerColor() {
+    return playerColor;
+  }
+}

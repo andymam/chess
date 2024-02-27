@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-//hi
 /**
  * For a class that can manage a chess game, making moves on a board
  * <p>

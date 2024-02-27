@@ -4,7 +4,6 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryUserDAO;
 import dataaccess.*;
-import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.*;
 import records.UserData;
 import server.requests.RegisterRequest;
@@ -18,7 +17,6 @@ public class RegisterServiceTests {
   GameDAO games = new MemoryGameDAO();
   AuthDAO auths = new MemoryAuthDAO();
   UserService userService = new UserService(users, games, auths);
-  GameService gameService = new GameService(users, games, auths);
   ClearService clearService = new ClearService(users, games, auths);
 
 
@@ -40,7 +38,7 @@ public class RegisterServiceTests {
   public void RegisterWorks() throws DataAccessException {
     RegisterRequest registerRequest = new RegisterRequest("John", "password", "deez@gmail.com");
     RegisterResult result = userService.register(registerRequest);
-    Assertions.assertEquals(result.username(), "John");
+    Assertions.assertEquals(result.getUsername(), "John");
   }
 
   @Test
@@ -54,7 +52,5 @@ public class RegisterServiceTests {
       Assertions.assertEquals(exception.getMessage(), "Error: bad request");
     }
   }
-
-
 }
 

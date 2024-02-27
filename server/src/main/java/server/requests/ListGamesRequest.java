@@ -1,3 +1,14 @@
 package server.requests;
 
-public record ListGamesRequest(String authorization) { }
+public class ListGamesRequest {
+  String authorization;
+
+  public ListGamesRequest(String authorization) {
+    this.authorization = authorization;
+  }
+
+  public String getAuthorization() {
+    return authorization;
+  }
+
+}

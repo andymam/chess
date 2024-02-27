@@ -1,6 +1,7 @@
 package dataaccess;
 
 import records.GameData;
+import server.requests.CreateGameRequest;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,24 +9,21 @@ import java.util.Objects;
 
 public class MemoryGameDAO implements GameDAO {
   ArrayList<GameData> games = new ArrayList<>();
-//  private int newGameID = 1;
+  private int newGameID = 1;
 
   public void clearGames() {
     games.clear();
   }
-  public GameData addGame(GameData game) {
-    for (GameData gayme : games) {
-      if (Objects.equals(gayme.getGameID(), game.getGameID())) {
-        return null;
-      }
-    }
+
+  public GameData addGame(CreateGameRequest request) {
+    GameData game = new GameData(newGameID++, request.getGameName());
     games.add(game);
     return game;
   }
 
-  public GameData getGame(int gameID) {
+  public GameData getGame(Integer gameID) {
     for (GameData game : games) {
-      if (Objects.equals(game.getGameID(), gameID)) {
+      if (game.getGameID() == gameID) {
         return game;
       }
     }
@@ -34,19 +32,6 @@ public class MemoryGameDAO implements GameDAO {
 
   public Collection<GameData> getGames() {
     return games;
-  }
-
-  public void deleteGame(GameData game) {
-    games.remove(game);
-  }
-
-  public boolean inGames(int gameID) {
-    for (GameData game : games) {
-      if (Objects.equals(game.getGameID(), gameID)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   public boolean setPlayer(String username, String playerColor, GameData game) {

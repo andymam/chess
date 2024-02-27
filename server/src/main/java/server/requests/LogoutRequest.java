@@ -1,5 +1,13 @@
 package server.requests;
 
-import records.AuthData;
+public class LogoutRequest {
+  String auth;
 
-public record LogoutRequest(String authorization) { }
+  public LogoutRequest(String auth) {
+    this.auth = auth;
+  }
+
+  public String getAuth() {
+    return auth;
+  }
+}

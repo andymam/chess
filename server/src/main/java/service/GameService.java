@@ -7,14 +7,12 @@ import dataaccess.UserDAO;
 import records.AuthData;
 import records.GameData;
 import server.requests.CreateGameRequest;
-import server.requests.*;
 import server.requests.JoinGameRequest;
+import server.requests.ListGamesRequest;
 import server.results.CreateGameResult;
-import server.results.GenericResult;
+import server.results.JoinGameResult;
 import server.results.ListGamesResult;
 
-import javax.xml.crypto.Data;
-import java.util.Collection;
 import java.util.Objects;
 
 public class GameService {
@@ -32,11 +30,10 @@ public class GameService {
   }
 
   public CreateGameResult createGame(CreateGameRequest createGameRequest) throws DataAccessException {
-    if (!Objects.equals(createGameRequest.gameName(), "") && !Objects.equals(createGameRequest.authorization(), "")) {
-      if (authDAO.inAuths(createGameRequest.authorization())) {
-        GameData newGame = new GameData(newGameID++, createGameRequest.gameName());
-        gameDAO.addGame(newGame);
-        return new CreateGameResult(newGame.getGameID(), null);
+    if (!Objects.equals(createGameRequest.getGameName(), null) && !Objects.equals(createGameRequest.getAuthorization(), null)) {
+      if (authDAO.inAuths(createGameRequest.getAuthorization())) {
+        GameData newGame = gameDAO.addGame(createGameRequest);
+        return new CreateGameResult(newGame.getGameID());
       }
       throw new DataAccessException("Error: unauthorized");
     }
@@ -44,22 +41,22 @@ public class GameService {
   }
 
   public ListGamesResult listGames(ListGamesRequest listGamesRequest) throws DataAccessException {
-    if (!Objects.equals(listGamesRequest.authorization(), "")) {
-      if (authDAO.inAuths(listGamesRequest.authorization())) {
-        return new ListGamesResult(gameDAO.getGames(), null);
+    if (!Objects.equals(listGamesRequest.getAuthorization(), "")) {
+      if (authDAO.inAuths(listGamesRequest.getAuthorization())) {
+        return new ListGamesResult(gameDAO.getGames());
       }
       throw new DataAccessException("Error: unauthorized");
     }
     throw new DataAccessException("Error: bad request");
   }
 
-  public GenericResult joinGame(JoinGameRequest joinGameRequest) throws DataAccessException {
-    if (authDAO.inAuths(joinGameRequest.authorization())) {
-      AuthData authToken = authDAO.getAuth(joinGameRequest.authorization());
-      GameData game = gameDAO.getGame(joinGameRequest.gameID());
-      if (joinGameRequest.gameID() != 0 && game != null) {
-        if (gameDAO.setPlayer(authToken.getUsername(), joinGameRequest.playerColor(), game)) {
-          return new GenericResult(null);
+  public JoinGameResult joinGame(JoinGameRequest joinGameRequest) throws DataAccessException {
+    if (authDAO.inAuths(joinGameRequest.getAuthorization())) {
+      AuthData authToken = authDAO.getAuth(joinGameRequest.getAuthorization());
+      GameData game = gameDAO.getGame(joinGameRequest.getGameID());
+      if (joinGameRequest.getGameID() != null && game != null) {
+        if (gameDAO.setPlayer(authToken.getUsername(), joinGameRequest.getPlayerColor(), game)) {
+          return new JoinGameResult();
         }
         throw new DataAccessException("Error: already taken");
       }

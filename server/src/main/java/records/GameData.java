@@ -1,13 +1,10 @@
 package records;
 
-import chess.ChessGame;
-
 public class GameData {
   int gameID;
   String whiteUsername;
   String blackUsername;
   String gameName;
-  ChessGame game;
 
   public GameData(int gameID, String gameName) {
     this.gameID = gameID;
@@ -18,9 +15,6 @@ public class GameData {
     return gameID;
   }
 
-  public String getGameName() {
-    return gameName;
-  }
 
   public void setBlackUser(String blackUsername) {
     this.blackUsername = blackUsername;

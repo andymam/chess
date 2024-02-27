@@ -1,11 +1,8 @@
 package service;
 
 import dataaccess.*;
-import records.*;
-import server.*;
-import server.results.GenericResult;
 
-import javax.xml.crypto.Data;
+import server.results.ClearResult;
 
 public class ClearService {
 
@@ -31,9 +28,10 @@ public class ClearService {
     authDAO.clearAuths();
   }
 
-  public void clearAll() throws DataAccessException {
+  public ClearResult clearAll() throws DataAccessException {
     clearGames();
     clearUsers();
     clearAuths();
+    return new ClearResult();
   }
 }
