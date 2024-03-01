@@ -1,6 +1,7 @@
 package dataaccess;
 
 import records.*;
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface AuthDAO {
