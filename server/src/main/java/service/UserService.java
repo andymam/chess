@@ -26,7 +26,7 @@ public class UserService {
 
   public RegisterResult register(RegisterRequest registerRequest) throws DataAccessException {
     if (!Objects.equals(registerRequest.getUsername(), null) && !Objects.equals(registerRequest.getPassword(), null) && !Objects.equals(registerRequest.getEmail(), null)) {
-      UserData user = userDAO.getUser(registerRequest.getUsername(), registerRequest.getPassword());
+      UserData user = userDAO.getUser(registerRequest.getUsername());
       if (user == null) {
         UserData newUser = new UserData(registerRequest.getUsername(), registerRequest.getPassword(), registerRequest.getEmail());
         userDAO.addUser(newUser);
@@ -41,7 +41,7 @@ public class UserService {
 
 
   public LoginResult login(LoginRequest loginRequest) throws DataAccessException {
-    UserData user = userDAO.getUser(loginRequest.getUsername(), loginRequest.getPassword());
+    UserData user = userDAO.getUser(loginRequest.getUsername());
     if (!Objects.equals(loginRequest.getUsername(), "") && !Objects.equals(loginRequest.getPassword(), "")) {
       if (user != null && Objects.equals(user.getPassword(), loginRequest.getPassword())) {
           AuthData authToken = new AuthData(loginRequest.getUsername());

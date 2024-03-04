@@ -18,13 +18,17 @@ public class Server {
     GameService gameService;
     ClearService clearService;
 
-    public Server() {
-        this.userDAO = new MemoryUserDAO();
-        this.gameDAO = new MemoryGameDAO();
-        this.authDAO = new MemoryAuthDAO();
-        this.userService = new UserService(userDAO, gameDAO, authDAO);
-        this.gameService = new GameService(userDAO, gameDAO, authDAO);
-        this.clearService = new ClearService(userDAO, gameDAO, authDAO);
+    public Server(){
+        try {
+            this.userDAO = new SQLUserDAO();
+            this.authDAO = new SQLAuthDAO();
+//            this.gameDAO = new SQLGameDAO();
+            this.userService = new UserService(userDAO, gameDAO, authDAO);
+            this.gameService = new GameService(userDAO, gameDAO, authDAO);
+            this.clearService = new ClearService(userDAO, gameDAO, authDAO);
+        } catch (DataAccessException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     public static void main(String[] args){
