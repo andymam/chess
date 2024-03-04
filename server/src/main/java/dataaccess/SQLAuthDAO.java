@@ -63,5 +63,4 @@ public class SQLAuthDAO implements AuthDAO {
     var json = rs.getString("json");
     return new Gson().fromJson(json, AuthData.class);
   }
-
 }
