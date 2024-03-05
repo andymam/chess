@@ -1,4 +1,4 @@
-package dataaccess;
+package dataAccess;
 
 import records.GameData;
 import server.requests.CreateGameRequest;

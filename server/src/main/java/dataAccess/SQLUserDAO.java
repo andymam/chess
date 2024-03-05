@@ -1,13 +1,10 @@
-package dataaccess;
+package dataAccess;
 
 import com.google.gson.Gson;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import records.UserData;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SQLUserDAO implements UserDAO {
   private final DatabaseManager db = new DatabaseManager();
@@ -37,7 +34,7 @@ public class SQLUserDAO implements UserDAO {
         }
       }
     } catch (SQLException ex) {
-      throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+      throw new DataAccessException(String.format("Unable to configure database for users lol: %s", ex.getMessage()));
     }
   }
 

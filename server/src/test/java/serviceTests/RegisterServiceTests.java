@@ -1,9 +1,9 @@
 package serviceTests;
 
-import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
-import dataaccess.MemoryUserDAO;
-import dataaccess.*;
+import dataAccess.AuthDAO;
+import dataAccess.DataAccessException;
+import dataAccess.MemoryUserDAO;
+import dataAccess.*;
 import org.junit.jupiter.api.*;
 import records.UserData;
 import server.requests.RegisterRequest;

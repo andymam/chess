@@ -1,9 +1,8 @@
-package dataaccess;
+package dataAccess;
 
 import records.AuthData;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 
 public class MemoryAuthDAO implements AuthDAO {

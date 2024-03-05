@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import server.requests.*;
 import server.results.*;
 import spark.*;
-import dataaccess.*;
+import dataAccess.*;
 import service.*;
 
 import java.util.Objects;
@@ -19,22 +19,22 @@ public class Server {
     ClearService clearService;
 
     public Server(){
-//        try {
-//            this.userDAO = new SQLUserDAO();
-//            this.authDAO = new SQLAuthDAO();
-//            this.gameDAO = new SQLGameDAO();
-//            this.userService = new UserService(userDAO, gameDAO, authDAO);
-//            this.gameService = new GameService(userDAO, gameDAO, authDAO);
-//            this.clearService = new ClearService(userDAO, gameDAO, authDAO);
-//        } catch (DataAccessException exception) {
-//            throw new RuntimeException(exception);
-//        }
-        this.userDAO = new MemoryUserDAO();
-        this.authDAO = new MemoryAuthDAO();
-        this.gameDAO = new MemoryGameDAO();
+        try {
+            this.userDAO = new SQLUserDAO();
+            this.authDAO = new SQLAuthDAO();
+            this.gameDAO = new SQLGameDAO();
+        } catch (DataAccessException exception) {
+            throw new RuntimeException(exception);
+        }
         this.userService = new UserService(userDAO, gameDAO, authDAO);
         this.gameService = new GameService(userDAO, gameDAO, authDAO);
         this.clearService = new ClearService(userDAO, gameDAO, authDAO);
+//        this.userDAO = new MemoryUserDAO();
+//        this.authDAO = new MemoryAuthDAO();
+//        this.gameDAO = new MemoryGameDAO();
+//        this.userService = new UserService(userDAO, gameDAO, authDAO);
+//        this.gameService = new GameService(userDAO, gameDAO, authDAO);
+//        this.clearService = new ClearService(userDAO, gameDAO, authDAO);
     }
 
     public static void main(String[] args){

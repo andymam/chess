@@ -1,9 +1,7 @@
 package dataAccessTests;
 
-import dataaccess.*;
+import dataAccess.*;
 import records.UserData;
-
-import java.util.List;
 
 public class SQLUserDAOTest {
   public static void main(String[] args) {

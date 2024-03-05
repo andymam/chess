@@ -1,10 +1,8 @@
-package dataaccess;
+package dataAccess;
 
 import com.google.gson.Gson;
 import records.AuthData;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -36,7 +34,7 @@ public class SQLAuthDAO implements AuthDAO {
         }
       }
     } catch (SQLException ex) {
-      throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+      throw new DataAccessException(String.format("Unable to configure database for auths lol: %s", ex.getMessage()));
     }
   }
 
@@ -63,13 +61,13 @@ public class SQLAuthDAO implements AuthDAO {
   }
 
   public void addAuth(AuthData authToken) throws DataAccessException {
-    var statement = "INSERT INTO authTokens (username, authToken, json) VALUES (?, ?, ?)";
+    var statement = "INSERT INTO authTokens (username, token, json) VALUES (?, ?, ?)";
     var json = new Gson().toJson(authToken);
     db.executeUpdate(statement, authToken.getUsername(), authToken.getAuthToken(), json);
   }
   public void deleteAuthorization(String authToken) throws DataAccessException {
-    var statement = "DELETE FROM authTokens WHERE authToken=?";
-    db.executeUpdate(statement);
+    var statement = "DELETE FROM authTokens WHERE token=?";
+    db.executeUpdate(statement, authToken);
   }
 
   public boolean inAuths(String authToken) throws DataAccessException {

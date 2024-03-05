@@ -1,14 +1,13 @@
 package service;
 
 import records.*;
-import dataaccess.*;
+import dataAccess.*;
 import server.requests.LoginRequest;
 import server.requests.RegisterRequest;
 import server.requests.LogoutRequest;
 import server.results.LoginResult;
 import server.results.LogoutResult;
 import server.results.RegisterResult;
-
 import java.util.Objects;
 
 public class UserService {

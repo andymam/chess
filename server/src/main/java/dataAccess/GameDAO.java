@@ -1,9 +1,8 @@
-package dataaccess;
+package dataAccess;
 
 import records.*;
 import server.requests.CreateGameRequest;
 
-import javax.xml.crypto.Data;
 import java.util.Collection;
 
 public interface GameDAO {

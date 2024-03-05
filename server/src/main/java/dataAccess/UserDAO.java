@@ -1,10 +1,6 @@
-package dataaccess;
+package dataAccess;
 
 import records.*;
-import server.requests.LoginRequest;
-import server.requests.RegisterRequest;
-
-import java.util.Collection;
 
 public interface UserDAO {
   void clearUsers() throws DataAccessException;
