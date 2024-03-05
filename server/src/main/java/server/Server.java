@@ -6,7 +6,6 @@ import server.results.*;
 import spark.*;
 import dataAccess.*;
 import service.*;
-
 import java.util.Objects;
 
 public class Server {
@@ -29,12 +28,6 @@ public class Server {
         this.userService = new UserService(userDAO, gameDAO, authDAO);
         this.gameService = new GameService(userDAO, gameDAO, authDAO);
         this.clearService = new ClearService(userDAO, gameDAO, authDAO);
-//        this.userDAO = new MemoryUserDAO();
-//        this.authDAO = new MemoryAuthDAO();
-//        this.gameDAO = new MemoryGameDAO();
-//        this.userService = new UserService(userDAO, gameDAO, authDAO);
-//        this.gameService = new GameService(userDAO, gameDAO, authDAO);
-//        this.clearService = new ClearService(userDAO, gameDAO, authDAO);
     }
 
     public static void main(String[] args){

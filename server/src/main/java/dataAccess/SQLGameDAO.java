@@ -3,12 +3,10 @@ package dataAccess;
 import com.google.gson.Gson;
 import records.GameData;
 import server.requests.CreateGameRequest;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 public class SQLGameDAO implements GameDAO {
 
@@ -98,24 +96,35 @@ public class SQLGameDAO implements GameDAO {
       if (playerColor == null) {
         return true;
       }
-      if (playerColor.equalsIgnoreCase("black") && Objects.equals(game.getBlackUsername(), null)) {
+      if (playerColor.equalsIgnoreCase("black") && game.getBlackUsername() == null) {
         statement = "UPDATE games SET blackUsername=? WHERE gameID=?";
-      } else if (playerColor.equalsIgnoreCase("white") && Objects.equals(game.getWhiteUsername(), null)) {
+      } else if (playerColor.equalsIgnoreCase("white") && game.getWhiteUsername() == null) {
         statement = "UPDATE games SET whiteUsername=? WHERE gameID=?";
       } else {
-        // Invalid player color
+        // Invalid player color or player already assigned
         return false;
       }
       try (var ps = conn.prepareStatement(statement)) {
         ps.setString(1, username);
         ps.setInt(2, game.getGameID());
         int rowsAffected = ps.executeUpdate();
-        return rowsAffected > 0;
+        if (rowsAffected > 0) {
+          // Update the game object with the assigned player
+          if (playerColor.equalsIgnoreCase("black")) {
+            game.setBlackUser(username);
+          } else {
+            game.setWhiteUser(username);
+          }
+          return true;
+        } else {
+          return false; // No rows were affected
+        }
       }
     } catch (SQLException e) {
       throw new DataAccessException(String.format("Error setting player: %s", e.getMessage()));
     }
   }
+
 
 
   private GameData readGame(ResultSet rs) throws SQLException {

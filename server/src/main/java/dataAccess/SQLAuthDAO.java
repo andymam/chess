@@ -2,7 +2,6 @@ package dataAccess;
 
 import com.google.gson.Gson;
 import records.AuthData;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

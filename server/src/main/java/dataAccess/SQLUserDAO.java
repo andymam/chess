@@ -3,7 +3,6 @@ package dataAccess;
 import com.google.gson.Gson;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import records.UserData;
-
 import java.sql.*;
 
 public class SQLUserDAO implements UserDAO {
