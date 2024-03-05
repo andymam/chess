@@ -20,10 +20,13 @@ public class SQLGameDAO implements GameDAO {
   private final String[] createStatements = {
           """
             CREATE TABLE IF NOT EXISTS  games (
-              `username` varchar(256) NOT NULL,
-              `token` varchar(256) NOT NULL,
+              `gameID` varchar(256) NOT NULL AUTO_INCREMENT,
+              `gameName` varchar(256) NOT NULL,
+              `blackUsername` varchar(256) NOT NULL,
+              `whiteUsername` varchar(256) NOT NULL,
+              `game` TEXT DEFAULT NULL,
               `json` TEXT DEFAULT NULL,
-              INDEX(username)
+              INDEX(gameID)
             )
             """
   };
@@ -41,27 +44,30 @@ public class SQLGameDAO implements GameDAO {
     }
   }
 
-  public void clearGames() {
-
+  public void clearGames() throws DataAccessException {
+    var statement = "TRUNCATE games";
+    db.executeUpdate(statement);
   }
-  public GameData addGame(CreateGameRequest request) {
-
-  }
-
-
-  public GameData getGame(Integer gameID) {
-
-  }
-  public Collection<GameData> getGames() {
+  public GameData addGame(CreateGameRequest request) throws DataAccessException {
 
   }
 
-  public boolean setPlayer(String username, String playerColor, GameData game) {
+
+  public GameData getGame(Integer gameID) throws DataAccessException {
+
+  }
+  public Collection<GameData> getGames() throws DataAccessException {
+
+  }
+
+  public boolean setPlayer(String username, String playerColor, GameData game) throws DataAccessException {
 
   }
 
   private GameData readGame(ResultSet rs) throws SQLException {
-    var json = rs.getString("json");
-    return new Gson().fromJson(json, GameData.class);
+    var game = new GameData(rs.getInt("gameID"), rs.getString("gameName"));
+    game.setWhiteUser(rs.getString("whiteUsername"));
+    game.setBlackUser(rs.getString("whiteUsername"));
+    return game;
   }
 }

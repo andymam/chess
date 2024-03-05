@@ -24,9 +24,9 @@ public class MemoryUserDAO implements UserDAO {
     users.add(user);
   }
 
-  public UserData getUser(String username) {
+  public UserData getUser(String username, String password) {
     for (UserData user : users) {
-      if (Objects.equals(user.getUsername(), username)) {
+      if (Objects.equals(user.getUsername(), username) && Objects.equals(password, user.getPassword())) {
         return user;
       }
     }

@@ -46,18 +46,50 @@ public class SQLAuthDAO implements AuthDAO {
   }
 
   public AuthData getAuth(String authToken) throws DataAccessException {
-
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "SELECT token, json FROM authTokens WHERE token=?";
+      try (var ps = conn.prepareStatement(statement)) {
+        ps.setString(1, authToken);
+        try (var rs = ps.executeQuery()) {
+          if (rs.next()) {
+            return readAuth(rs);
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw new DataAccessException(String.format("Unable to read data: %s", e.getMessage()));
+    }
+    return null;
   }
-  public void addAuth(AuthData authToken) throws DataAccessException {
 
+  public void addAuth(AuthData authToken) throws DataAccessException {
+    var statement = "INSERT INTO authTokens (username, authToken, json) VALUES (?, ?, ?)";
+    var json = new Gson().toJson(authToken);
+    db.executeUpdate(statement, authToken.getUsername(), authToken.getAuthToken(), json);
   }
   public void deleteAuthorization(String authToken) throws DataAccessException {
-
+    var statement = "DELETE FROM authTokens WHERE authToken=?";
+    db.executeUpdate(statement);
   }
 
-  public boolean inAuths(String authToken) throws  DataAccessException {
-
+  public boolean inAuths(String authToken) throws DataAccessException {
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "SELECT COUNT(*) AS count FROM authTokens WHERE token=?";
+      try (var ps = conn.prepareStatement(statement)) {
+        ps.setString(1, authToken);
+        try (var rs = ps.executeQuery()) {
+          if (rs.next()) {
+            int count = rs.getInt("count");
+            return count > 0; // If count is greater than 0, authToken exists
+          }
+        }
+      }
+    } catch (SQLException e) {
+      throw new DataAccessException(String.format("Error checking auths: %s", e.getMessage()));
+    }
+    return false; // Return false if an exception occurs or no result is found
   }
+
 
   private AuthData readAuth(ResultSet rs) throws SQLException {
     var json = rs.getString("json");

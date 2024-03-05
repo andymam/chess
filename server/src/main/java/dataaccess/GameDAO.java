@@ -7,12 +7,12 @@ import javax.xml.crypto.Data;
 import java.util.Collection;
 
 public interface GameDAO {
-  void clearGames();
-  GameData addGame(CreateGameRequest request);
+  void clearGames() throws DataAccessException;
+  GameData addGame(CreateGameRequest request) throws DataAccessException;
 
-  GameData getGame(Integer gameID);
-  Collection<GameData> getGames();
+  GameData getGame(Integer gameID) throws DataAccessException;
+  Collection<GameData> getGames() throws DataAccessException;
 
-  boolean setPlayer(String username, String playerColor, GameData game);
+  boolean setPlayer(String username, String playerColor, GameData game) throws DataAccessException;
 
 }

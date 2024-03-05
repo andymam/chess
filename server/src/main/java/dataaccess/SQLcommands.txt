@@ -2,3 +2,5 @@ CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) NOT NULL, password VARCHA
 
 
 schemas, right click on my table, select rows - can mess with commands
+
+run \sql in terminal to get into sql mode from JS
