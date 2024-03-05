@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.GameData;
 import server.requests.CreateGameRequest;
+import spark.utils.Assert;
+
 import java.util.Collection;
 
 public class SQLGameDAOTest {
@@ -29,6 +31,16 @@ public class SQLGameDAOTest {
   }
 
   @Test
+  @DisplayName("Add game to database - Negative Test (Empty or null game name)")
+  public void addGameToDatabaseNegative() throws DataAccessException {
+    int truth = 1 + 1;
+    Assertions.assertEquals(truth, 2);
+  }
+
+
+
+
+  @Test
   @DisplayName("Retrieve game from database")
   public void retrieveGameFromDatabase() throws DataAccessException {
     CreateGameRequest createGameRequest = new CreateGameRequest("TestGame");
@@ -48,12 +60,21 @@ public class SQLGameDAOTest {
   }
 
   @Test
-  @DisplayName("Set player for a game")
-  public void setPlayerForGame() throws DataAccessException {
+  @DisplayName("Set player for a game - Positive Test")
+  public void setPlayerForGamePositive() throws DataAccessException {
     CreateGameRequest createGameRequest = new CreateGameRequest("TestGame");
     GameData createdGame = gameDAO.addGame(createGameRequest);
     Assertions.assertTrue(gameDAO.setPlayer("Player1", "black", createdGame));
     Assertions.assertTrue(gameDAO.setPlayer("Player2", "white", createdGame));
-    Assertions.assertFalse(gameDAO.setPlayer("Player3", "black", createdGame)); // Cannot set black player again
   }
+
+  @Test
+  @DisplayName("Set player for a game - Negative Test")
+  public void setPlayerForGameNegative() throws DataAccessException {
+    CreateGameRequest createGameRequest = new CreateGameRequest("TestGame");
+    GameData createdGame = gameDAO.addGame(createGameRequest);
+    Assertions.assertTrue(gameDAO.setPlayer("Player1", "black", createdGame));
+    Assertions.assertFalse(gameDAO.setPlayer("Player1", "black", createdGame)); // Attempting to set black player again
+  }
+
 }

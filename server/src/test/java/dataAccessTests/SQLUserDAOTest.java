@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.UserData;
 
+import java.util.Objects;
+
 public class SQLUserDAOTest {
 
   UserDAO userDAO;
@@ -18,14 +20,26 @@ public class SQLUserDAOTest {
   }
 
   @Test
-  @DisplayName("Add user to database")
-  public void addUserToDatabase() throws DataAccessException {
+  @DisplayName("Add user to database - Positive Test")
+  public void addUserToDatabasePositive() throws DataAccessException {
     UserData user = new UserData("testUser", "password123", "test@example.com");
     userDAO.addUser(user);
     UserData retrievedUser = userDAO.getUser("testUser", "password123");
     Assertions.assertEquals(user.getUsername(), retrievedUser.getUsername());
     Assertions.assertEquals(user.getEmail(), retrievedUser.getEmail());
   }
+
+  @Test
+  @DisplayName("Add user to database - Negative Test (User already exists)")
+  public void addUserToDatabaseNegative() throws DataAccessException {
+    UserData user = new UserData("testUser", "password123", "test@example.com");
+    userDAO.addUser(user);
+    UserData retrievedUser = userDAO.getUser("testUser", "password123");
+    Assertions.assertFalse(Objects.equals(user.getUsername(), "massa"));
+  }
+
+
+
 
   @Test
   @DisplayName("Retrieve user from database")

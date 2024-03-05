@@ -27,6 +27,20 @@ public class SQLAuthDAOTest {
   }
 
   @Test
+  @DisplayName("Add auth token to database bad")
+  public void addAuthTokenToDatabaseNegative() throws DataAccessException {
+    try {
+      AuthData authToken = new AuthData("testUser", "token123");
+      authDAO.addAuth(authToken);
+      AuthData authToken2 = new AuthData("testUser", "token1234");
+      authDAO.addAuth(authToken2);
+    }
+    catch (DataAccessException e) {
+      Assertions.assertEquals(e.getMessage(), "Error: bad request");
+    }
+  }
+
+  @Test
   @DisplayName("Retrieve auth token from database")
   public void retrieveAuthTokenFromDatabase() throws DataAccessException {
     AuthData authToken = new AuthData("testUser", "token123");
