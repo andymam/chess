@@ -1,57 +1,57 @@
 package dataAccessTests;
 
 import dataAccess.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import records.UserData;
 
 public class SQLUserDAOTest {
-  public static void main(String[] args) {
-    // Initialize SQLUserDAO
-    SQLUserDAO userDAO;
-    try {
-      userDAO = new SQLUserDAO();
-    } catch (DataAccessException e) {
-      System.out.println("Error initializing SQLUserDAO: " + e.getMessage());
-      return;
-    }
 
-    // Test addUser
-    UserData newUser = new UserData("testuser", "password123", "testuser@example.com");
-    try {
-      userDAO.addUser(newUser);
-      System.out.println("User added successfully.");
-    } catch (DataAccessException e) {
-      System.out.println("Error adding user: " + e.getMessage());
-    }
+  UserDAO userDAO;
 
-//    // Test getUser
-//    try {
-//      UserData retrievedUser = userDAO.getUser("testuser");
-//      if (retrievedUser != null) {
-//        System.out.println("User retrieved successfully: " + retrievedUser);
-//      } else {
-//        System.out.println("User not found.");
-//      }
-//    } catch (DataAccessException e) {
-//      System.out.println("Error getting user: " + e.getMessage());
-//    }
+  @BeforeEach
+  void setUp() throws DataAccessException {
+    userDAO = new SQLUserDAO();
+    userDAO.clearUsers(); // Clear any existing users before each test
+  }
 
-//    // Test getAllUsers
-//    try {
-//      List<UserData> allUsers = userDAO.getAllUsers();
-//      System.out.println("All users:");
-//      for (UserData user : allUsers) {
-//        System.out.println(user);
-//      }
-//    } catch (DataAccessException e) {
-//      System.out.println("Error getting all users: " + e.getMessage());
-//    }
+  @Test
+  @DisplayName("Add user to database")
+  public void addUserToDatabase() throws DataAccessException {
+    UserData user = new UserData("testUser", "password123", "test@example.com");
+    userDAO.addUser(user);
+    UserData retrievedUser = userDAO.getUser("testUser", "password123");
+    Assertions.assertEquals(user.getUsername(), retrievedUser.getUsername());
+    Assertions.assertEquals(user.getEmail(), retrievedUser.getEmail());
+  }
 
-    // Test clearUsers
-    try {
-      userDAO.clearUsers();
-      System.out.println("All users cleared successfully.");
-    } catch (DataAccessException e) {
-      System.out.println("Error clearing users: " + e.getMessage());
-    }
+  @Test
+  @DisplayName("Retrieve user from database")
+  public void retrieveUserFromDatabase() throws DataAccessException {
+    UserData user = new UserData("testUser", "password123", "test@example.com");
+    userDAO.addUser(user);
+    UserData retrievedUser = userDAO.getUser("testUser", "password123");
+    Assertions.assertNotNull(retrievedUser);
+    Assertions.assertEquals(user.getUsername(), retrievedUser.getUsername());
+    Assertions.assertEquals(user.getEmail(), retrievedUser.getEmail());
+  }
+
+  @Test
+  @DisplayName("Retrieve non-existent user returns null")
+  public void retrieveNonExistentUser() throws DataAccessException {
+    UserData retrievedUser = userDAO.getUser("nonExistentUser", "password123");
+    Assertions.assertNull(retrievedUser);
+  }
+
+  @Test
+  @DisplayName("Clear users from database")
+  public void clearUsersFromDatabase() throws DataAccessException {
+    UserData user = new UserData("testUser", "password123", "test@example.com");
+    userDAO.addUser(user);
+    userDAO.clearUsers();
+    UserData retrievedUser = userDAO.getUser("testUser", "password123");
+    Assertions.assertNull(retrievedUser);
   }
 }

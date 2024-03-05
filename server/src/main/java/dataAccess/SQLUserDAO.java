@@ -60,8 +60,7 @@ public class SQLUserDAO implements UserDAO {
           if (rs.next()) {
             String encryptedPass = rs.getString("password");
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String hashed = encoder.encode(password);
-            if (encoder.matches(hashed, encryptedPass)) {
+            if (encoder.matches(password, encryptedPass)) {
               return readUser(rs);
             }
           }

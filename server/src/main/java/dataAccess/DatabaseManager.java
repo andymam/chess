@@ -71,6 +71,7 @@ public class DatabaseManager {
                 return 0;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
         }
     }

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 public class SQLGameDAO implements GameDAO {
 
@@ -25,7 +26,6 @@ public class SQLGameDAO implements GameDAO {
               `blackUsername` varchar(256) DEFAULT NULL,
               `whiteUsername` varchar(256) DEFAULT NULL,
               `game` TEXT DEFAULT NULL,
-              `json` TEXT DEFAULT NULL,
               PRIMARY KEY (gameID),
               INDEX(gameName)
             )
@@ -51,8 +51,8 @@ public class SQLGameDAO implements GameDAO {
   }
 
   public GameData addGame(CreateGameRequest request) throws DataAccessException {
-    var statement = "INSERT INTO games (gameID, gameName, blackUsername, whiteUsername, game, json) VALUES (?, ?, ?, ?, ?, ?)";
-    GameData game = new GameData(0, request.getGameName());
+    var statement = "INSERT INTO games (gameName, game) VALUES (?, ?)";
+    GameData game = new GameData(1, request.getGameName());
     var json = new Gson().toJson(game);
     var id = db.executeUpdate(statement, game.getGameName(), json);
     return new GameData(id, request.getGameName(), game.getGame());
@@ -95,9 +95,12 @@ public class SQLGameDAO implements GameDAO {
   public boolean setPlayer(String username, String playerColor, GameData game) throws DataAccessException {
     try (var conn = DatabaseManager.getConnection()) {
       String statement;
-      if (playerColor.equalsIgnoreCase("black")) {
+      if (playerColor == null) {
+        return true;
+      }
+      if (playerColor.equalsIgnoreCase("black") && Objects.equals(game.getBlackUsername(), null)) {
         statement = "UPDATE games SET blackUsername=? WHERE gameID=?";
-      } else if (playerColor.equalsIgnoreCase("white")) {
+      } else if (playerColor.equalsIgnoreCase("white") && Objects.equals(game.getWhiteUsername(), null)) {
         statement = "UPDATE games SET whiteUsername=? WHERE gameID=?";
       } else {
         // Invalid player color
@@ -118,7 +121,7 @@ public class SQLGameDAO implements GameDAO {
   private GameData readGame(ResultSet rs) throws SQLException {
     var game = new GameData(rs.getInt("gameID"), rs.getString("gameName"));
     game.setWhiteUser(rs.getString("whiteUsername"));
-    game.setBlackUser(rs.getString("whiteUsername"));
+    game.setBlackUser(rs.getString("blackUsername"));
     return game;
   }
 }
