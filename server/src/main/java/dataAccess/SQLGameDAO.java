@@ -49,6 +49,10 @@ public class SQLGameDAO implements GameDAO {
   }
 
   public GameData addGame(CreateGameRequest request) throws DataAccessException {
+    if (request.getGameName() == null || request.getGameName().isEmpty()) {
+      return null; // Reject requests with empty or null game names
+    }
+
     var statement = "INSERT INTO games (gameName, game) VALUES (?, ?)";
     GameData game = new GameData(1, request.getGameName());
     var json = new Gson().toJson(game);

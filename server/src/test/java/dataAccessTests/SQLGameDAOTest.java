@@ -7,7 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.GameData;
 import server.requests.CreateGameRequest;
-import spark.utils.Assert;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import java.util.Collection;
 
@@ -33,22 +34,49 @@ public class SQLGameDAOTest {
   @Test
   @DisplayName("Add game to database - Negative Test (Empty or null game name)")
   public void addGameToDatabaseNegative() throws DataAccessException {
-    int truth = 1 + 1;
-    Assertions.assertEquals(truth, 2);
+    CreateGameRequest createGameRequest = new CreateGameRequest(""); // Empty game name
+    GameData createdGame = gameDAO.addGame(createGameRequest);
+    Assertions.assertNull(createdGame); // Assert that no game is created
   }
 
 
 
-
   @Test
-  @DisplayName("Retrieve game from database")
-  public void retrieveGameFromDatabase() throws DataAccessException {
+  @DisplayName("Retrieve game from database - Success")
+  public void retrieveGameFromDatabaseSuccess() throws DataAccessException {
     CreateGameRequest createGameRequest = new CreateGameRequest("TestGame");
     GameData createdGame = gameDAO.addGame(createGameRequest);
     GameData retrievedGame = gameDAO.getGame(createdGame.getGameID());
     Assertions.assertNotNull(retrievedGame);
     Assertions.assertEquals("TestGame", retrievedGame.getGameName());
   }
+
+  @Test
+  @DisplayName("Retrieve game from database - Failure (Game does not exist)")
+  public void retrieveGameFromDatabaseFailure() throws DataAccessException {
+    GameData game = gameDAO.getGame(-1); // Providing an invalid game ID
+    Assertions.assertNull(game);
+  }
+
+
+  @Test
+  @DisplayName("Retrieve all games from database - Success")
+  public void retrieveAllGamesFromDatabaseSuccess() throws DataAccessException {
+    gameDAO.addGame(new CreateGameRequest("Game1"));
+    gameDAO.addGame(new CreateGameRequest("Game2"));
+    Collection<GameData> games = gameDAO.getGames();
+    Assertions.assertEquals(2, games.size());
+  }
+
+  @Test
+  @DisplayName("Retrieve all games from database - Failure (No games exist)")
+  public void retrieveAllGamesFromDatabaseFailure() throws DataAccessException {
+    gameDAO.clearGames(); // Ensure the database is empty
+    Collection<GameData> games = gameDAO.getGames();
+    Assertions.assertEquals(0, games.size());
+  }
+
+
 
   @Test
   @DisplayName("Retrieve all games from database")
