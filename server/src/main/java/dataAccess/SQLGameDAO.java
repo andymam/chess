@@ -1,5 +1,6 @@
 package dataAccess;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import records.GameData;
 import server.requests.CreateGameRequest;
@@ -55,7 +56,7 @@ public class SQLGameDAO implements GameDAO {
 
     var statement = "INSERT INTO games (gameName, game) VALUES (?, ?)";
     GameData game = new GameData(1, request.getGameName());
-    var json = new Gson().toJson(game);
+    var json = new Gson().toJson(game.getGame());
     var id = db.executeUpdate(statement, game.getGameName(), json);
     return new GameData(id, request.getGameName(), game.getGame());
   }
@@ -135,6 +136,7 @@ public class SQLGameDAO implements GameDAO {
     var game = new GameData(rs.getInt("gameID"), rs.getString("gameName"));
     game.setWhiteUser(rs.getString("whiteUsername"));
     game.setBlackUser(rs.getString("blackUsername"));
+//    game.setGame(new Gson().fromJson(rs.getString("json"), ChessGame.class));
     return game;
   }
 }
