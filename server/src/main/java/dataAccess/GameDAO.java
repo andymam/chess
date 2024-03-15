@@ -1,7 +1,7 @@
 package dataAccess;
 
 import records.*;
-import server.requests.CreateGameRequest;
+import requests.CreateGameRequest;
 
 import java.util.Collection;
 

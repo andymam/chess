@@ -5,7 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import server.requests.CreateGameRequest;
+import requests.CreateGameRequest;
 import service.ClearService;
 import records.*;
 

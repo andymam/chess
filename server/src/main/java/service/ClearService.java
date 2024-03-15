@@ -2,7 +2,7 @@ package service;
 
 import dataAccess.*;
 
-import server.results.ClearResult;
+import results.ClearResult;
 
 public class ClearService {
 

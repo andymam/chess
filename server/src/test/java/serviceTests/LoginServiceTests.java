@@ -2,8 +2,8 @@ package serviceTests;
 
 import dataAccess.*;
 import org.junit.jupiter.api.*;
-import server.requests.LoginRequest;
-import server.results.LoginResult;
+import requests.LoginRequest;
+import results.LoginResult;
 import service.ClearService;
 import service.UserService;
 import records.*;

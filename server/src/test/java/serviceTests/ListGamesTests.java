@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.AuthData;
-import server.requests.CreateGameRequest;
-import server.requests.ListGamesRequest;
-import server.results.ListGamesResult;
+import requests.CreateGameRequest;
+import requests.ListGamesRequest;
+import results.ListGamesResult;
 import service.GameService;
 
 public class ListGamesTests {

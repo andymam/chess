@@ -6,12 +6,12 @@ import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import records.AuthData;
 import records.GameData;
-import server.requests.CreateGameRequest;
-import server.requests.JoinGameRequest;
-import server.requests.ListGamesRequest;
-import server.results.CreateGameResult;
-import server.results.JoinGameResult;
-import server.results.ListGamesResult;
+import requests.CreateGameRequest;
+import requests.JoinGameRequest;
+import requests.ListGamesRequest;
+import results.CreateGameResult;
+import results.JoinGameResult;
+import results.ListGamesResult;
 
 import java.util.Objects;
 

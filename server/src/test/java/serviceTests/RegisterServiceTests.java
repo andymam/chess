@@ -6,8 +6,8 @@ import dataAccess.MemoryUserDAO;
 import dataAccess.*;
 import org.junit.jupiter.api.*;
 import records.UserData;
-import server.requests.RegisterRequest;
-import server.results.RegisterResult;
+import requests.RegisterRequest;
+import results.RegisterResult;
 import service.ClearService;
 import service.*;
 

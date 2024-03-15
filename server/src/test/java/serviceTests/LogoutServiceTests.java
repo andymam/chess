@@ -2,8 +2,8 @@ package serviceTests;
 
 import dataAccess.*;
 import org.junit.jupiter.api.*;
-import server.requests.LogoutRequest;
-import server.results.LogoutResult;
+import requests.LogoutRequest;
+import results.LogoutResult;
 import service.UserService;
 import records.*;
 

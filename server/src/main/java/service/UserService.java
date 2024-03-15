@@ -2,12 +2,12 @@ package service;
 
 import records.*;
 import dataAccess.*;
-import server.requests.LoginRequest;
-import server.requests.RegisterRequest;
-import server.requests.LogoutRequest;
-import server.results.LoginResult;
-import server.results.LogoutResult;
-import server.results.RegisterResult;
+import requests.LoginRequest;
+import requests.RegisterRequest;
+import requests.LogoutRequest;
+import results.LoginResult;
+import results.LogoutResult;
+import results.RegisterResult;
 import java.util.Objects;
 
 public class UserService {
