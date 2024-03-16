@@ -28,6 +28,10 @@ public class ChessBoard {
         board[row][col] = piece;
     }
 
+    public ChessPiece[][] getBoard() {
+        return board;
+    }
+
     /**
      * Gets a chess piece on the chessboard
      *
