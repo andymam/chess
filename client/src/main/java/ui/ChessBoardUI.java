@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 import static ui.EscapeSequences.*;
-import static ui.EscapeSequences.SET_TEXT_COLOR_WHITE;
 
 public class ChessBoardUI {
 
@@ -52,12 +51,13 @@ public class ChessBoardUI {
 
   private static void drawRows(PrintStream out, String[] margin, ChessPiece[][] board) {
     for (int row = 0; row <= board.length - 1; row++){
+      out.print("                   ");
       printCheckeredBoard(out, row, margin, board[row]);
     }
   }
 
   private static void printCheckeredBoard(PrintStream out, int rowNum, String[] margin, ChessPiece[] row) {
-    out.print(SET_TEXT_COLOR_WHITE);
+    out.print(SET_TEXT_COLOR_YELLOW);
     out.print(SET_BG_COLOR_LIGHT_GREY);
     out.print(" ");
     out.print(margin[rowNum]);
@@ -74,7 +74,7 @@ public class ChessBoardUI {
       out.print(" ");
     }
     out.print(SET_BG_COLOR_LIGHT_GREY);
-    out.print(SET_TEXT_COLOR_WHITE);
+    out.print(SET_TEXT_COLOR_YELLOW);
     out.print(" ");
     out.print(margin[rowNum]);
     out.print(" ");
@@ -105,6 +105,8 @@ public class ChessBoardUI {
   }
 
   private static void drawHeaders(PrintStream out, String[] headers) {
+    out.print(SET_BG_COLOR_BLACK);
+    out.print("                   ");
     out.print(SET_BG_COLOR_LIGHT_GREY);
     out.print(" ");
     out.print(" ");
@@ -122,7 +124,7 @@ public class ChessBoardUI {
   private static void drawHeader(PrintStream out, String headerText) {
     out.print(" ".repeat(1));
     out.print(SET_BG_COLOR_LIGHT_GREY);
-    out.print(SET_TEXT_COLOR_WHITE);
+    out.print(SET_TEXT_COLOR_YELLOW);
     out.print(headerText);
     out.print(" ".repeat(1));
   }
