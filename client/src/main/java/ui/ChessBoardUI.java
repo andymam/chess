@@ -16,9 +16,9 @@ public class ChessBoardUI {
 
   public static void main(String[] args){
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+    out.print(ERASE_SCREEN);
     ChessPiece[][] board = new ChessGame().getBoard().getBoard();
     ChessPiece[][] flippedBoard = flipBoard(board);
-    out.print(ERASE_SCREEN);
     String[] ogHeaders = {"h", "g", "f", "e", "d", "c", "b", "a"};
     String[] blackHeaders = {"a", "b", "c", "d", "e", "f", "g", "h"};
     String[] whiteNumbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -45,22 +45,22 @@ public class ChessBoardUI {
 
   public static void drawChessBoard(PrintStream out, String[] headers, String[] margin, ChessPiece[][] board){
     drawHeaders(out, headers);
-    drawRows(out, margin, board);
+    printRows(out, margin, board);
     drawHeaders(out, headers);
   }
 
-  private static void drawRows(PrintStream out, String[] margin, ChessPiece[][] board) {
+  private static void printRows(PrintStream out, String[] margin, ChessPiece[][] board) {
     for (int row = 0; row <= board.length - 1; row++){
       out.print("                   ");
-      printCheckeredBoard(out, row, margin, board[row]);
+      printRow(out, row, margin, board[row]);
     }
   }
 
-  private static void printCheckeredBoard(PrintStream out, int rowNum, String[] margin, ChessPiece[] row) {
+  private static void printRow(PrintStream out, int rowNum, String[] side, ChessPiece[] row) {
     out.print(SET_TEXT_COLOR_YELLOW);
     out.print(SET_BG_COLOR_LIGHT_GREY);
     out.print(" ");
-    out.print(margin[rowNum]);
+    out.print(side[rowNum]);
     out.print(" ");
     for (int i = 0; i < BOARD_SIZE_IN_SQUARES; i++){
       if ((rowNum + i) % 2 == 0){
@@ -70,21 +70,21 @@ public class ChessBoardUI {
         out.print(SET_BG_COLOR_BLACK);
       }
       out.print(" ");
-      out.print(piece(row[i]));
+      out.print(makePiece(row[i]));
       out.print(" ");
     }
     out.print(SET_BG_COLOR_LIGHT_GREY);
     out.print(SET_TEXT_COLOR_YELLOW);
     out.print(" ");
-    out.print(margin[rowNum]);
+    out.print(side[rowNum]);
     out.print(" ");
     out.print(SET_BG_COLOR_BLACK);
     out.println();
   }
 
-  private static String piece(ChessPiece chessPiece) {
+  private static String makePiece(ChessPiece chessPiece) {
     if (chessPiece == null) {
-      return " ";
+      return EMPTY;
     } else {
       ChessGame.TeamColor color = chessPiece.getTeamColor();
       ChessPiece.PieceType type = chessPiece.getPieceType();

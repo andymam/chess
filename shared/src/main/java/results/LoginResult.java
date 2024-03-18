@@ -20,6 +20,10 @@ public class LoginResult {
     return username;
   }
 
+  public String getAuthToken() {
+    return authToken;
+  }
+
   public String getMessage() {
     return message;
   }

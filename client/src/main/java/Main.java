@@ -7,9 +7,14 @@ import static ui.EscapeSequences.*;
 
 public class Main {
 
+    private final ReplUI ui;
+
+    public Main(String serverUrl) {
+        ui = new ReplUI(serverUrl);
+    }
+
     public static void main(String[] args) {
         System.out.println("♕ Welcome to 240 Chess ♕");
-        ReplUI ui = new ReplUI();
         Scanner scanner = new Scanner(System.in);
 
         String menu ="""
@@ -24,8 +29,8 @@ public class Main {
             try {
                 System.out.println(SET_TEXT_COLOR_WHITE + menu);
                 String line = scanner.nextLine();
-//                result = ReplUI.eval(line);
-//                System.out.println(SET_TEXT_COLOR_BLUE + result);
+                result = ui.eval(line);
+                System.out.println(SET_TEXT_COLOR_BLUE + result);
             } catch (Throwable e) {
                 var msg = e.toString();
                 System.out.print(msg);

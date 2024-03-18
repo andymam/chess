@@ -9,10 +9,21 @@ import javax.management.Notification;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static ui.EscapeSequences.*;
 
 public class ReplUI {
+  private String visitorName = null;
+  private final ServerFacade server;
+  private final String serverUrl;
+  private State state = State.LOGGEDOUT;
+
+  public ReplUI(String serverUrl) {
+    server = new ServerFacade(serverUrl);
+    this.serverUrl = serverUrl;
+  }
+
 
   public String eval(String input) {
     try {
@@ -25,7 +36,7 @@ public class ReplUI {
         case "logout" -> logout(params);
         case "create game" -> createGame(params);
         case "join game" -> joinGame(params);
-        case "observe game" -> observeGame(params);
+        case "watch game" -> watchGame(params);
         case "list games" -> listGames(params);
         case "clear" -> clear();
         case "quit" -> "quit";
@@ -36,39 +47,75 @@ public class ReplUI {
     }
   }
 
-  public String login(String... Params) throws ResponseException {
-
+  public String login(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+        return "failed to log in: " + e.toString();
+    }
   }
 
-  public String register(String... Params) throws ResponseException {
-
+  public String register(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
-  public String logout(String... Params) throws ResponseException {
-
+  public String logout(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
-  public String createGame(String... Params) throws ResponseException {
-
+  public String createGame(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
-  public String joinGame(String... Params) throws ResponseException {
-
+  public String joinGame(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
-  public String observeGame(String... Params) throws ResponseException {
-
+  public String watchGame(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
-  public String listGames(String... Params) throws ResponseException {
-
+  public String listGames(String... params) throws ResponseException {
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
   public String clear() throws ResponseException {
+    try {
 
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
   public String help() {
-
+    try {
+      return params[5];
+    } catch (Throwable e) {
+      return "failed to log in: " + e.toString();
+    }
   }
 
 }
