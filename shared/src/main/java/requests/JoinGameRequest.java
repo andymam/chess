@@ -2,9 +2,10 @@ package requests;
 
 public class JoinGameRequest{
 
-  String playerColor;
+  public String playerColor;
   Integer gameID;
   String authorization;
+
 
   public JoinGameRequest(Integer gameID) {
     this.gameID = gameID;

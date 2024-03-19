@@ -7,28 +7,19 @@ import static ui.EscapeSequences.*;
 
 public class Main {
 
-    private final ReplUI ui;
-
-    public Main(String serverUrl) {
-        ui = new ReplUI(serverUrl);
-    }
+    private static ReplUI ui;
 
     public static void main(String[] args) {
         System.out.println("♕ Welcome to 240 Chess ♕");
         Scanner scanner = new Scanner(System.in);
-
-        String menu ="""
-                - register <USERNAME> <PASSWORD> <EMAIL> - to create an account
-                - login <USERNAME> <PASSWORD> - to play chess
-                - quit - playing chess
-                - help - with possible commands
-                """;
+        ui = new ReplUI();
 
         var result = "";
         while (!result.equals("quit")) {
+            System.out.println(SET_TEXT_COLOR_WHITE + ui.print_menu());
+            printPrompt();
+            String line = scanner.nextLine();
             try {
-                System.out.println(SET_TEXT_COLOR_WHITE + menu);
-                String line = scanner.nextLine();
                 result = ui.eval(line);
                 System.out.println(SET_TEXT_COLOR_BLUE + result);
             } catch (Throwable e) {
@@ -37,5 +28,9 @@ public class Main {
             }
         }
         System.out.println();
+    }
+
+    private static void printPrompt() {
+        System.out.print("\n" + RESET + ">>> " + SET_TEXT_COLOR_GREEN);
     }
 }

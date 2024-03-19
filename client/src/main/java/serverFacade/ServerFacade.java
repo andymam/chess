@@ -17,6 +17,10 @@ public class ServerFacade {
     serverUrl = url;
   }
 
+  public ServerFacade() {
+    serverUrl = "http://localhost:8080";
+  }
+
   public RegisterResult register(String username, String password, String email) throws ResponseException {
     var path = "/user";
     var request = new RegisterRequest(username, password, email);
