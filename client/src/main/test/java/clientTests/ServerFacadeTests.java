@@ -124,6 +124,19 @@ public class ServerFacadeTests {
         Assertions.assertThrows(ResponseException.class, () -> serverFacade.joinGame(gameResponse.getGameID(), ChessGame.TeamColor.BLACK, "fakeAuth"));
     }
 
+    @Test
+    @DisplayName("Clear method works")
+    public void clearWorks() {
+        Assertions.assertDoesNotThrow(() -> serverFacade.clear());
+    }
+
+    @Test
+    @DisplayName("Clear method fails")
+    public void clearFails() {
+        Assertions.assertDoesNotThrow(() -> serverFacade.register("username", "password", "email"));
+        Assertions.assertDoesNotThrow(() -> serverFacade.clear());
+    }
+
 
     @Test
     public void sampleTest() {
