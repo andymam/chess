@@ -19,7 +19,6 @@ public class ReplUI {
   private String auth = null;
   private final ChessBoardUI boardUI = new ChessBoardUI();
   private final ServerFacade serverFacade = new ServerFacade();
-  private State state = State.LOGGEDOUT;
 
 
   public String print_menu() {
@@ -54,7 +53,7 @@ public class ReplUI {
       return switch (cmd) {
         case "login" -> login(params);
         case "register" -> register(params);
-        case "logout" -> logout(params);
+        case "logout" -> logout();
         case "create" -> createGame(params);
         case "join" -> joinGame(params);
         case "observe" -> watchGame(params);
@@ -79,10 +78,6 @@ public class ReplUI {
 
   public String register(String... params) throws ResponseException {
     try {
-      System.out.println(params[0]);
-      System.out.println(params[1]);
-      System.out.println(params[2]);
-
       RegisterResult result = serverFacade.register(params[0], params[1], params[2]);
       auth = result.getAuthToken();
       return "You have registered and are now logged in.";
@@ -91,21 +86,22 @@ public class ReplUI {
     }
   }
 
-  public String logout(String... params) throws ResponseException {
+  public String logout() throws ResponseException {
     try {
-      LogoutResult result = serverFacade.logout(auth);
+      serverFacade.logout(auth);
       auth = null;
       return "You have successfully logged out.";
     } catch (Throwable e) {
       return "Failed to log out: " + e.toString();
     }
   }
-//
+
   public String createGame(String... params) throws ResponseException {
     try {
+      assertLoggedIn();
       CreateGameRequest request = new CreateGameRequest(params[0]);
       request.setAuth(auth);
-      CreateGameResult result = serverFacade.createGame(request.getGameName(), auth);
+      serverFacade.createGame(request.getGameName(), auth);
       return "Game created";
     } catch (Throwable e) {
       return "Failed to create game: " + e.toString();
@@ -114,12 +110,14 @@ public class ReplUI {
 
   public String joinGame(String... params) throws ResponseException {
     try {
+      assertLoggedIn();
       String gameID = params[0];
-      String color = params[1];
       JoinGameRequest request = new JoinGameRequest(Integer.parseInt(gameID));
       request.setAuthorization(auth);
+      String color = params[1];
 //      JoinGameResult result = serverFacade.joinGame(Integer.parseInt(gameID), color, auth);
-      boardUI.printBoard();
+      boardUI.showWhiteBoard();
+      boardUI.showBlackBoard();
       return String.format("Joined game %s as %s", gameID, color);
     } catch (Throwable e) {
       return "Failed to join game as a player: " + e.toString();
@@ -129,11 +127,13 @@ public class ReplUI {
 
   public String watchGame(String... params) throws ResponseException {
     try {
+      assertLoggedIn();
       JoinGameRequest request = new JoinGameRequest(Integer.parseInt(params[0]));
       request.playerColor = null;
       request.setAuthorization(auth);
 //      JoinGameResult result = serverFacade.joinGame(request.getGameID(), null, auth);
-      boardUI.printBoard();
+      boardUI.showWhiteBoard();
+      boardUI.showBlackBoard();
       return String.format("Joined game %s as an observer", params[0]);
     } catch (Throwable e) {
       return "Failed to join game as an observer: " + e.toString();
@@ -142,8 +142,9 @@ public class ReplUI {
 
   public String listGames() throws ResponseException {
     try {
+      assertLoggedIn();
       ListGamesResult result = serverFacade.listGames(auth);
-      return "Games: " + result.gamesToString();
+      return "Games: " + result.convertGamesToString();
     } catch (Throwable e) {
       return "Failed to list games: " + e.toString();
     }
@@ -154,9 +155,8 @@ public class ReplUI {
   }
 
   private void assertLoggedIn() throws ResponseException {
-    if (state == State.LOGGEDOUT) {
-      throw new ResponseException(400, "You must log in");
+    if (auth == null) {
+      throw new ResponseException(400, "You must log in first.");
     }
   }
-
 }

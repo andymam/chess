@@ -12,32 +12,27 @@ public class ChessBoardUI {
 
 
   private static final int BOARD_SIZE_IN_SQUARES = 8;
-  private static final int SQUARE_SIZE_IN_CHARS = 3;
 
-  public static void main(String[] args){
+
+  public void showWhiteBoard() {
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     out.print(ERASE_SCREEN);
     ChessPiece[][] board = new ChessGame().getBoard().getBoard();
     ChessPiece[][] flippedBoard = flipBoard(board);
     String[] ogHeaders = {"h", "g", "f", "e", "d", "c", "b", "a"};
-    String[] blackHeaders = {"a", "b", "c", "d", "e", "f", "g", "h"};
     String[] whiteNumbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
-    String[] blackNumbers =  {"8", "7", "6", "5", "4", "3", "2", "1"};
-    drawChessBoard(out, ogHeaders, whiteNumbers, board);
     out.println(SET_BG_COLOR_BLACK);
-    drawChessBoard(out, blackHeaders, blackNumbers, flippedBoard);
+    drawChessBoard(out, ogHeaders, whiteNumbers, board);
+
   }
 
-  public void printBoard() {
+  public void showBlackBoard() {
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     out.print(ERASE_SCREEN);
     ChessPiece[][] board = new ChessGame().getBoard().getBoard();
     ChessPiece[][] flippedBoard = flipBoard(board);
-    String[] ogHeaders = {"h", "g", "f", "e", "d", "c", "b", "a"};
     String[] blackHeaders = {"a", "b", "c", "d", "e", "f", "g", "h"};
-    String[] whiteNumbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
     String[] blackNumbers =  {"8", "7", "6", "5", "4", "3", "2", "1"};
-    drawChessBoard(out, ogHeaders, whiteNumbers, board);
     out.println(SET_BG_COLOR_BLACK);
     drawChessBoard(out, blackHeaders, blackNumbers, flippedBoard);
   }

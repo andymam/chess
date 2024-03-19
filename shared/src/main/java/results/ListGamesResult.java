@@ -14,7 +14,7 @@ public class ListGamesResult {
     return games;
   }
 
-  public String gamesToString(){
+  public String convertGamesToString(){
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     for (GameData game: games){
       out.println(game.getGameID()+ " : " + game.getGameName());
