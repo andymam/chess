@@ -115,7 +115,15 @@ public class ReplUI {
       JoinGameRequest request = new JoinGameRequest(Integer.parseInt(gameID));
       request.setAuthorization(auth);
       String color = params[1];
-//      JoinGameResult result = serverFacade.joinGame(Integer.parseInt(gameID), color, auth);
+      ChessGame.TeamColor teamColor;
+      if (color == "WHITE") {
+        teamColor = ChessGame.TeamColor.WHITE;
+      }
+      else {
+        teamColor = ChessGame.TeamColor.BLACK;
+      }
+
+      serverFacade.joinGame(Integer.parseInt(gameID), teamColor, auth);
       boardUI.showWhiteBoard();
       boardUI.showBlackBoard();
       return String.format("Joined game %s as %s", gameID, color);
@@ -131,7 +139,7 @@ public class ReplUI {
       JoinGameRequest request = new JoinGameRequest(Integer.parseInt(params[0]));
       request.playerColor = null;
       request.setAuthorization(auth);
-//      JoinGameResult result = serverFacade.joinGame(request.getGameID(), null, auth);
+      serverFacade.joinGame(request.getGameID(), null, auth);
       boardUI.showWhiteBoard();
       boardUI.showBlackBoard();
       return String.format("Joined game %s as an observer", params[0]);
