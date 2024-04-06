@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import requests.*;
 import results.*;
+import server.websocket.WebSocketHandler;
 import spark.*;
 import dataAccess.*;
 import service.*;
@@ -18,11 +19,14 @@ public class Server {
     GameService gameService;
     ClearService clearService;
 
+    WebSocketHandler webSocketHandler;
+
     public Server(){
         try {
             this.userDAO = new SQLUserDAO();
             this.authDAO = new SQLAuthDAO();
             this.gameDAO = new SQLGameDAO();
+            this.webSocketHandler = new WebSocketHandler();
         } catch (DataAccessException exception) {
             throw new RuntimeException(exception);
         }
@@ -47,7 +51,7 @@ public class Server {
 
         Spark.staticFiles.location("/web");
 
-
+        Spark.webSocket("/connect", webSocketHandler);
 
         Spark.delete("/db", this::clearHandler);
         Spark.post("/user", this::registerHandler);

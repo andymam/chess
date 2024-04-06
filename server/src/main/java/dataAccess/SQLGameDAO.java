@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static java.sql.Statement.*;
+import static java.sql.Types.*;
+
 public class SQLGameDAO implements GameDAO {
 
   DatabaseManager db = new DatabaseManager();
@@ -130,13 +133,52 @@ public class SQLGameDAO implements GameDAO {
     }
   }
 
+  public boolean updateGame(int gameID, ChessGame game) {
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "UPDATE games Set json=? WHERE gameID=?";
+      try (var ps = conn.prepareStatement(statement)) {
+        ps.setString(1, new Gson().toJson(game));
+        ps.setInt(2, gameID);
+        ps.executeUpdate();
+        return true;
+      }
+    }
+    catch (Exception e) {
+      return false;
+    }
+  }
+
+  private int executeUpdate(String statement, Object... params) throws DataAccessException {
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+        for (var i = 0; i < params.length; i++) {
+          var param = params[i];
+          if (param instanceof String p) ps.setString(i + 1, p);
+          else if (param instanceof Integer p) ps.setInt(i + 1, p);
+          else if (param instanceof ChessGame p) ps.setString(i + 1, new Gson().toJson(p));
+          else if (param == null) ps.setNull(i + 1, NULL);
+        }
+        ps.executeUpdate();
+
+        var rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+          return rs.getInt(1);
+        }
+
+        return 0;
+      }
+    } catch (SQLException e) {
+      throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+    }
+  }
+
 
 
   private GameData readGame(ResultSet rs) throws SQLException {
     var game = new GameData(rs.getInt("gameID"), rs.getString("gameName"));
     game.setWhiteUser(rs.getString("whiteUsername"));
     game.setBlackUser(rs.getString("blackUsername"));
-//    game.setGame(new Gson().fromJson(rs.getString("json"), ChessGame.class));
+    game.setGame(new Gson().fromJson(rs.getString("json"), ChessGame.class));
     return game;
   }
 }
