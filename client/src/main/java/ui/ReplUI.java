@@ -17,6 +17,7 @@ import static ui.EscapeSequences.*;
 
 public class ReplUI {
   private String auth = null;
+  private String game = null;
   private final ChessBoardUI boardUI = new ChessBoardUI();
   private final ServerFacade serverFacade = new ServerFacade();
 
@@ -28,6 +29,15 @@ public class ReplUI {
           - register <USERNAME> <PASSWORD> <EMAIL> - to create an account
           - login <USERNAME> <PASSWORD> - to play chess
           - quit - playing chess
+          - help - with possible commands
+          """;
+    } else if (game != null) {
+        menu = """
+          - move - make a move
+          - redraw - show the chess board again
+          - highlight - mark possible moves
+          - leave - dip out of the game
+          - resign - give up
           - help - with possible commands
           """;
     } else {
@@ -58,11 +68,61 @@ public class ReplUI {
         case "join" -> joinGame(params);
         case "observe" -> watchGame(params);
         case "list" -> listGames();
+        case "move" -> makeMove(params);
+        case "redraw" -> redraw(params);
+        case "highlight" -> highlight(params);
+        case "leave" -> leave(params);
+        case "resign" -> resign(params);
         case "quit" -> "quit";
         default -> help();
       };
     } catch (ResponseException ex) {
       return ex.getMessage();
+    }
+  }
+
+  public String makeMove(String... params) throws ResponseException {
+    try {
+      assertLoggedIn();
+
+    } catch (Throwable e) {
+      return "Failed to make a move: " + e.toString();
+    }
+  }
+
+  public String redraw(String... params) throws ResponseException {
+    try {
+      assertLoggedIn();
+
+    } catch (Throwable e) {
+      return "Failed to redraw the board: " + e.toString();
+    }
+  }
+
+  public String highlight(String... params) throws ResponseException {
+    try {
+      assertLoggedIn();
+
+    } catch (Throwable e) {
+      return "Failed to highlight moves: " + e.toString();
+    }
+  }
+
+  public String leave(String... params) throws ResponseException {
+    try {
+      assertLoggedIn();
+
+    } catch (Throwable e) {
+      return "Failed to leave game: " + e.toString();
+    }
+  }
+
+  public String resign(String... params) throws ResponseException {
+    try {
+      assertLoggedIn();
+
+    } catch (Throwable e) {
+      return "Failed to resign: " + e.toString();
     }
   }
 

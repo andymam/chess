@@ -1,6 +1,8 @@
 import chess.*;
 import serverFacade.ServerFacade;
 import ui.*;
+import webSocketMessages.serverMessages.NotificationMessage;
+
 import java.net.*;
 import java.util.Scanner;
 import static ui.EscapeSequences.*;
@@ -29,6 +31,11 @@ public class Main {
         }
         System.out.println();
     }
+
+//    public void notify(NotificationMessage notificationMessage) {
+//        System.out.println(SET_TEXT_COLOR_RED + notificationMessage);
+//        printPrompt();
+//    }
 
     private static void printPrompt() {
         System.out.print("\n" + RESET + ">>> " + SET_TEXT_COLOR_GREEN);
