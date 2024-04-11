@@ -1,9 +1,8 @@
 package websocket;
 
-import webSocketMessages.serverMessages.NotificationMessage;
+import webSocketMessages.serverMessages.ServerMessage;
 
-public class NotificationHandler {
-  public void notify(NotificationMessage notification) {
-    System.out.println(notification.getNotification());
-  }
+public interface NotificationHandler {
+  public void notify(String message);
+
 }

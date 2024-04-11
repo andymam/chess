@@ -1,5 +1,7 @@
 package dataAccess;
 
+import chess.ChessGame;
+import com.google.gson.Gson;
 import records.GameData;
 import requests.CreateGameRequest;
 
@@ -19,6 +21,15 @@ public class MemoryGameDAO implements GameDAO {
     GameData game = new GameData(newGameID++, request.getGameName());
     games.add(game);
     return game;
+  }
+
+  @Override
+  public boolean updateGame(int gameID, ChessGame game) {
+    return true;
+  }
+
+  public boolean removePlayer(int gameID, String username) {
+    return false;
   }
 
   public GameData getGame(Integer gameID) {

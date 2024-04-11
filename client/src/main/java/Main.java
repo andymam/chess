@@ -1,4 +1,5 @@
 import chess.*;
+import exception.ResponseException;
 import serverFacade.ServerFacade;
 import ui.*;
 import webSocketMessages.serverMessages.NotificationMessage;
@@ -11,7 +12,7 @@ public class Main {
 
     private static ReplUI ui;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ResponseException {
         System.out.println("♕ Welcome to 240 Chess ♕");
         Scanner scanner = new Scanner(System.in);
         ui = new ReplUI();
@@ -32,10 +33,6 @@ public class Main {
         System.out.println();
     }
 
-//    public void notify(NotificationMessage notificationMessage) {
-//        System.out.println(SET_TEXT_COLOR_RED + notificationMessage);
-//        printPrompt();
-//    }
 
     private static void printPrompt() {
         System.out.print("\n" + RESET + ">>> " + SET_TEXT_COLOR_GREEN);

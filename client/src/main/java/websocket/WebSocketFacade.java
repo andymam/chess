@@ -3,8 +3,6 @@ import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import exception.ResponseException;
-import webSocketMessages.*;
-import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.userCommands.*;
 
 import javax.websocket.*;
@@ -29,8 +27,7 @@ public class WebSocketFacade extends Endpoint {
       this.session.addMessageHandler(new MessageHandler.Whole<String>() {
         @Override
         public void onMessage(String message) {
-          NotificationMessage notification = new Gson().fromJson(message, NotificationMessage.class);
-          notificationHandler.notify(notification);
+          notificationHandler.notify(message);
         }
       });
     } catch (DeploymentException | IOException | URISyntaxException ex) {
@@ -64,15 +61,6 @@ public class WebSocketFacade extends Endpoint {
   public void makeMove(String auth, int gameID, ChessMove move) throws ResponseException {
     try {
       var moveAction = new MakeMoveCommand(auth, gameID, move, false);
-      this.session.getBasicRemote().sendText(new Gson().toJson(moveAction));
-    } catch (IOException e) {
-      throw new ResponseException(500, e.getMessage());
-    }
-  }
-
-  public void highlightMoves(String auth, int gameID, ChessMove move) throws ResponseException {
-    try {
-      var moveAction = new MakeMoveCommand(auth, gameID, move, true);
       this.session.getBasicRemote().sendText(new Gson().toJson(moveAction));
     } catch (IOException e) {
       throw new ResponseException(500, e.getMessage());

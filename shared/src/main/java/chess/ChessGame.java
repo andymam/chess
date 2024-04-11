@@ -13,13 +13,13 @@ import java.util.Set;
  */
 public class ChessGame {
 
-    private ChessBoard board;
     private TeamColor teamTurn;
+    private boolean finishedGame = false;
+    private ChessBoard board = new ChessBoard();
 
     public ChessGame() {
-        this.board = new ChessBoard();
+        this.board.resetBoard();
         this.teamTurn = TeamColor.WHITE;
-        board.resetBoard();
     }
 
     /**
@@ -44,6 +44,14 @@ public class ChessGame {
     public enum TeamColor {
         WHITE,
         BLACK
+    }
+
+    public void finishGame() {
+        finishedGame = true;
+    }
+
+    public boolean gameOver() {
+        return finishedGame;
     }
 
     /**

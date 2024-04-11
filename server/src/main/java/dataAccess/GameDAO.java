@@ -13,7 +13,10 @@ public interface GameDAO {
   GameData getGame(Integer gameID) throws DataAccessException;
   Collection<GameData> getGames() throws DataAccessException;
 
-  public boolean updateGame(int gameID, ChessGame game);
+  boolean updateGame(int gameID, ChessGame game);
+
+  boolean removePlayer(int gameID, String username);
+
 
   boolean setPlayer(String username, String playerColor, GameData game) throws DataAccessException;
 

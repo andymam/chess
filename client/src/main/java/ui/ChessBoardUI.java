@@ -2,6 +2,7 @@ package ui;
 
 import chess.ChessGame;
 import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -14,27 +15,43 @@ public class ChessBoardUI {
   private static final int BOARD_SIZE_IN_SQUARES = 8;
 
 
-  public void showWhiteBoard() {
+  public void showBoard(ChessGame game, ChessGame.TeamColor color, boolean highlight, ChessPosition position) {
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-    out.print(ERASE_SCREEN);
-    ChessPiece[][] board = new ChessGame().getBoard().getBoard();
-    ChessPiece[][] flippedBoard = flipBoard(board);
-    String[] ogHeaders = {"h", "g", "f", "e", "d", "c", "b", "a"};
-    String[] whiteNumbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
-    out.println(SET_BG_COLOR_BLACK);
-    drawChessBoard(out, ogHeaders, whiteNumbers, board);
-
+    ChessPiece[][] board = game.getBoard().getBoard();
+    int[][] highlighted = null;
+    if (highlight) {
+      highlighted = highlightBoard(game, board, position);
+    }
+    if (color == ChessGame.TeamColor.WHITE) {
+      String[] ogHeaders = {"h", "g", "f", "e", "d", "c", "b", "a"};
+      String[] whiteNumbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
+      out.println(SET_BG_COLOR_BLACK);
+      drawChessBoard(out, ogHeaders, whiteNumbers, board);
+    } else {
+      ChessPiece[][] flippedBoard = flipBoard(board);
+      String[] blackHeaders = {"a", "b", "c", "d", "e", "f", "g", "h"};
+      String[] blackNumbers =  {"8", "7", "6", "5", "4", "3", "2", "1"};
+      out.println(SET_BG_COLOR_BLACK);
+      drawChessBoard(out, blackHeaders, blackNumbers, flippedBoard);
+    }
   }
 
-  public void showBlackBoard() {
-    var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-    out.print(ERASE_SCREEN);
-    ChessPiece[][] board = new ChessGame().getBoard().getBoard();
-    ChessPiece[][] flippedBoard = flipBoard(board);
-    String[] blackHeaders = {"a", "b", "c", "d", "e", "f", "g", "h"};
-    String[] blackNumbers =  {"8", "7", "6", "5", "4", "3", "2", "1"};
-    out.println(SET_BG_COLOR_BLACK);
-    drawChessBoard(out, blackHeaders, blackNumbers, flippedBoard);
+  private int[][] highlightBoard(ChessGame game, ChessPiece[][] board, ChessPosition position) {
+    int[][] highlighted = new int[8][8];
+    var moves = game.validMoves(position);
+    for (int i = 0; i < board.length; i++) {
+      for (int j = 0; i < board[0].length; j++) {
+        ChessPosition temp = new ChessPosition(i, j);
+        for (var move : moves) {
+          if (position.equals(temp)) {
+            highlighted[i][j] = 2;
+          } else if (move.getEndPosition().equals(temp)) {
+            highlighted[i][j] = 1;
+          }
+        }
+      }
+    }
+    return highlighted;
   }
 
   public static ChessPiece[][] flipBoard(ChessPiece[][] array) {

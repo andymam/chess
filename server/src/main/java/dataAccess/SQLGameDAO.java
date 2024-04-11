@@ -8,9 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
-import static java.sql.Statement.*;
-import static java.sql.Types.*;
 
 public class SQLGameDAO implements GameDAO {
 
@@ -148,27 +147,29 @@ public class SQLGameDAO implements GameDAO {
     }
   }
 
-  private int executeUpdate(String statement, Object... params) throws DataAccessException {
+  public boolean removePlayer(int gameID, String username) {
     try (var conn = DatabaseManager.getConnection()) {
-      try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
-        for (var i = 0; i < params.length; i++) {
-          var param = params[i];
-          if (param instanceof String p) ps.setString(i + 1, p);
-          else if (param instanceof Integer p) ps.setInt(i + 1, p);
-          else if (param instanceof ChessGame p) ps.setString(i + 1, new Gson().toJson(p));
-          else if (param == null) ps.setNull(i + 1, NULL);
+      GameData game = getGame(gameID);
+      if (Objects.equals(username, game.getBlackUsername()) || Objects.equals(username, game.getWhiteUsername())) {
+        String statement = "";
+        if (Objects.equals(username, game.getBlackUsername())) {
+          statement = "UPDATE games Set blackUsername=? WHERE gameID=?";
         }
-        ps.executeUpdate();
-
-        var rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-          return rs.getInt(1);
+        else if (Objects.equals(username, game.getWhiteUsername())) {
+          statement = "UPDATE games Set whiteUsername=? WHERE gameID=?";
         }
 
-        return 0;
+        try (var ps = conn.prepareStatement(statement)) {
+          ps.setString(1, null);
+          ps.setInt(2, gameID);
+          ps.executeUpdate();
+          return true;
+        }
       }
-    } catch (SQLException e) {
-      throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+      return true;
+    }
+    catch (Exception e) {
+      return false;
     }
   }
 
