@@ -32,7 +32,7 @@ public class ConnectionManager {
     for (var c : connections2) {
       if (c.isOpen()) {
         if (!c.equals(session)) {
-          session.getRemote().sendString(notification);
+          c.getRemote().sendString(notification);
         }
       } else {
         removeList.add(c);

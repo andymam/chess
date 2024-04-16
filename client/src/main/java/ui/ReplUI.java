@@ -30,13 +30,13 @@ public class ReplUI implements NotificationHandler {
   private String player = null;
 
 
-//  private WebSocketFacade ws = new WebSocketFacade("http://localhost:3000", this);
-  private WebSocketFacade ws;
+  private WebSocketFacade ws = new WebSocketFacade("http://localhost:8080", this);
+//  private WebSocketFacade ws;
   private final ChessBoardUI boardUI = new ChessBoardUI();
   private final Scanner scanner = new Scanner(System.in);
   private final ServerFacade serverFacade = new ServerFacade();
 
-//  public ReplUI() throws ResponseException {}
+  public ReplUI() throws ResponseException {}
 
   public String print_menu() {
     String menu = "";
@@ -108,7 +108,7 @@ public class ReplUI implements NotificationHandler {
       assertLoggedIn();
       System.out.println("Enter the start position ('row col'): ");
       String startInput = scanner.next();
-      var tokens = startInput.split(" ");
+      var tokens = startInput.split("");
       ChessPosition start = new ChessPosition(Integer.parseInt(tokens[0]), tokens[1].charAt(0) - 'a');
       ChessPiece piece = game.getBoard().getPiece(start);
       if (piece == null || piece.getTeamColor() != turn) {
@@ -116,9 +116,9 @@ public class ReplUI implements NotificationHandler {
       }
       System.out.println("Enter the end position ('row col'): ");
       String endInput = scanner.next();
-      var endTokens = endInput.split(" ");
+      var endTokens = endInput.split("");
       ChessPiece.PieceType promotion = null;
-      if (piece.getPieceType() == ChessPiece.PieceType.PAWN && Integer.parseInt(endTokens[1]) == 8) {
+      if (piece.getPieceType() == ChessPiece.PieceType.PAWN && (turn == ChessGame.TeamColor.WHITE && Integer.parseInt(endTokens[0]) == 8) || (turn == ChessGame.TeamColor.BLACK && Integer.parseInt(endTokens[0]) == 1)) {
         System.out.println("Which piece would you like to promote to?\nQ - Queen\nK - Knight\nB - Bishop\nR - Rook");
         String promotionPiece = scanner.next();
         promotion = selectPromotion(promotionPiece);
